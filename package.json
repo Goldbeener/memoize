@@ -1,0 +1,12 @@
+{
+  "name": "memoize",
+  "version": "0.1.0",
+  "description": "npm  指定author的值？ 常见的npm命令",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "cumtadu <cumtadu@gmail.com>",
+  "license": "ISC"
+}
