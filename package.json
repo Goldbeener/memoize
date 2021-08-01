@@ -4,7 +4,7 @@
   "description": "npm  指定author的值？ 常见的npm命令",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update:readme": "tree . ｜ > README.md"
   },
   "keywords": [],
   "author": "cumtadu <cumtadu@gmail.com>",
