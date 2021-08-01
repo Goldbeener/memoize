@@ -1,4 +1,4 @@
-.
+```
 ├── README.md
 ├── base
 ├── browser
@@ -10,5 +10,5 @@
 │   └── npm
 │       └── README.md
 └── package.json
-
+```
 6 directories, 5 files
