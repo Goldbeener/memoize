@@ -1,6 +1,8 @@
 ```
 ├── README.md
 ├── base
+│   └── es6
+│       └── class.md
 ├── browser
 │   └── cookie.md
 ├── network
@@ -11,4 +13,4 @@
 │       └── README.md
 └── package.json
 ```
-6 directories, 5 files
+7 directories, 6 files
