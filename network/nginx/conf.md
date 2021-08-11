@@ -107,6 +107,12 @@ location 匹配详细规则
 > `^~`与最长前缀配合使用
 > 正则表达式也是在最长前缀匹配的基础上的，再次进行匹配
 #### root & alias
+root 和 alias 都是用于指定资源寻值的路径，确定在哪个目录下寻找资源
+
+root 是直接 使用`root值 + uri`作为完整的资源路径；
+alias 是 `alias值 + 资源名` 作为完整的资源路径，真正请求uri上的path可能被丢掉
+
+> 并且`alias`必须要以`/`结尾；
 ```bash
 location / {
     alias /path/to/file/  # 匹配的路径下的资源，是直接在alias指定的目录下查找的，与请求的uri不一致
@@ -123,6 +129,7 @@ location /i/ {
 }
 上述 两个配置 ，针对资源请求 /i/top.gif，最终寻值的路径是不一样的
 ```
+> 官网建议，当location匹配的是资源名的话，最好使用root
 
 #### index
 当匹配的location规则内没有找到合适的资源，会默认返回的资源
@@ -153,7 +160,21 @@ Syntax: rewrite regex replacement [flag<last|break|redirect|permanent>]
 该指令可能出现在server配置块或者是location配置块；    
 regex 匹配的是请求uri,  会按照出现的顺序，依次处理，但是flag的值可能会改变这个行为。   
 
+#### error_page
+```bash
+Syntax: 
+    error_page errorCode [=[response]] uri;
 
+    error_page 404             /404.html;
+    error_page 404 =200        /empty.html;
+    error_page 500 502 503 504 /50x.html;
+
+
+```
+error_page 与try_files 类似，处理一些特定错误码出现时的状况，可以内部重定向到一个指定的资源      
+如果使用了`try_files`就不需要再使用`error_page`; 因为`try_files`可以处理对应的状况
+
+> `try_files`已经设定了资源找不到的降级方案，可以cover全部错误的状况；`error_page`的话，感觉是提供了针对某些错误状况，做针对性的处理的一种手段。
 
 
 
