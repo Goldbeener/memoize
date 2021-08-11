@@ -184,3 +184,20 @@ error_page 与try_files 类似，处理一些特定错误码出现时的状况�
 
 ### webp 与 jpg 自动匹配
 
+
+## 在vscode开发
+安装remote ssh插件
+`Remote-SSH` 和 `Remote - SSH: Editing Configuration Files` 2个插件
+
+安装完成之后，点击左侧`Remote Explorer`面板上
+
+点击SSH TARGETS 右侧的加号，弹出框中 输入登陆命令: `ssh root@ip`
+
+选择一个配置文件，开始连接
+
+连接成功之后，在左下角可以看到连接的机器信息
+
+点击左侧的`Open Folder`按钮, 在路径栏输入要打开的文件地址，比如nginx配置文件地址： `/etc/nginx`, 就可以打开远程机器上的文件
+
+安装`NGINX Configuration` 和 `nginx-formatter` 可以对nginx配置文件有高亮显示效果，和格式化。
+
