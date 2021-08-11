@@ -114,8 +114,8 @@ alias 是 `alias值 + 资源名` 作为完整的资源路径，真正请求uri�
 
 > 并且`alias`必须要以`/`结尾；
 ```bash
-location / {
-    alias /path/to/file/  # 匹配的路径下的资源，是直接在alias指定的目录下查找的，与请求的uri不一致
+location /location {
+    alias /path/to/file/  # 匹配的路径下的资源，是直接在alias值 + uri中去掉location剩余的path 才是最终的资源路径
     root /roo/path/ # 匹配的路径下的资源，需要在前面拼接上root前缀，才是资源完整的路径
 } 
 
@@ -130,6 +130,13 @@ location /i/ {
 上述 两个配置 ，针对资源请求 /i/top.gif，最终寻值的路径是不一样的
 ```
 > 官网建议，当location匹配的是资源名的话，最好使用root
+
+在root配置下：
+![root](./imgs/root.png)
+
+在alias配置下：
+![alias](./imgs/alias.png)
+
 
 #### index
 当匹配的location规则内没有找到合适的资源，会默认返回的资源
