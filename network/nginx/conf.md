@@ -1,3 +1,8 @@
+# 上下文
++ main
++ http
++ server
++ location
 ## 三层配置
 nginx 文件一般是在 `/etc/nginx` 路径下
 
@@ -110,7 +115,7 @@ location 匹配详细规则
 root 和 alias 都是用于指定资源寻值的路径，确定在哪个目录下寻找资源
 
 root 是直接 使用`root值 + uri`作为完整的资源路径；
-alias 是 `alias值 + 资源名` 作为完整的资源路径，真正请求uri上的path可能被丢掉
+alias 是 `alias值 + 资源名` 作为完整的资源路径，真正请求uri中匹配location的部分会被丢掉
 
 > 并且`alias`必须要以`/`结尾；
 ```bash
@@ -184,6 +189,32 @@ error_page 与try_files 类似，处理一些特定错误码出现时的状况�
 > `try_files`已经设定了资源找不到的降级方案，可以cover全部错误的状况；`error_page`的话，感觉是提供了针对某些错误状况，做针对性的处理的一种手段。
 
 
+## map    
+在`http`配置上下文内定义       
+创建一些依赖其他变量的变量，有点类似`computed`的意思
+```bash
+map $http_user_agent $mobile {
+    default       0;
+    "~Opera Mini" 1;
+}
+
+# $mobile 是创建的新的变量，它依赖于$http_user_agent的值
+# 默认是 0；
+# 当$http_user_agent的值，匹配正则/~Opera Mini/的时候，值是1；
+
+```
+map块内是原始值匹配规则 和 结果值的映射关系；     
+原始值匹配规则可以是；
++ string 忽略大小写
++ 正则表达式，必须以`~` 或者 `~*` 开头，分别代表区分、不区分大小写
+
+多重匹配规则优先级：
+1. 纯字符串匹配，没有通配符
+2. 最长前缀通配符 `*.example.com`
+3. 最长后缀通配符 `example.*`
+4. 第一个符合的正则表达式，按照在配置文件内声明的顺序
+5. 默认值
+6. 空字符串
 
 ## 实战场景
 ### 单页应用网站配置
