@@ -79,7 +79,7 @@ optional_modifier 有如下几种取值
 + =:  此种状况下，需要path === location_match, 完全匹配
 + ^～: 如果location_match满足，则直接使用这个location规则，不再继续进行查找
 + ～:  将location_match作为区分大小写的正则表达式，来匹配path
-+ ～*: 将location_match座位不区分大小写的正则表达式，来匹配path
++ ～*: 将location_match作为不区分大小写的正则表达式，来匹配path
 
 ```bash
 location /api {
@@ -188,9 +188,18 @@ error_page 与try_files 类似，处理一些特定错误码出现时的状况�
 
 > `try_files`已经设定了资源找不到的降级方案，可以cover全部错误的状况；`error_page`的话，感觉是提供了针对某些错误状况，做针对性的处理的一种手段。
 
-## set 指令
 
-## map    
+## 自定义变量
+### set 指令
+syntax
+```
+# 可以在http、server、if 上下文中
+set $var value
+
+# 将value的值设置给var变量，value可以是纯文本、其他变量，或者是文本和变量的组合
+```
+
+### map  指令  
 在`http`配置上下文内定义       
 创建一些依赖其他变量的变量，有点类似`computed`的意思
 ```bash

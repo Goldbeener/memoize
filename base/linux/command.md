@@ -32,3 +32,8 @@ rsync -av source userName@remoteHost:/destination
 sudo chown -R newOwner /path/to/folder
 
 ```
+
+## 查看日志
+```bash
+tail -f ./xxx.log | grep 'xxx'
+``
