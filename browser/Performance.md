@@ -32,3 +32,14 @@
 #### DOM Nodes
 > The DOM node count graph shows the number of created DOM nodes that are still held in memory, i.e. which have not been garbage collected yet. This doesn't have to coincide with the elements you get through getElementsByTagName. The latter will also only get you the elements actually attached to the document tree. It won't get any 'offline' items to which you still have references.
 
+
+#### JS Event Listener
+
+What are these so called Listeners to begin with?
+
++ These are event listeners.
++ 选中一个元素，查看`Event Listeners`tab, 
++ 选中 `Ancestors`checkbox; 可以看到页面所有绑定事件
+
+页面操作引起 JS Event Listener 数量显著增加问题？
+
