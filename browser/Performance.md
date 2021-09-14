@@ -15,6 +15,9 @@
 + TTFB Time To First Byte 请求发出后到接受响应首字节所需时间， web页面加载耗时的最大影响因素，占页面总延迟的40%-60%
 
 
+## Performance Metrics
+
+
 
 ## tools
 ### performanc monitor

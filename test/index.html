@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe</title>
+    <style>
+        .container {}
+
+        .inner {
+            width: 100px;
+            background: pink;
+            padding: 5px;
+            border: 10px solid blue;
+            margin: 20px;
+            overflow-y: auto;
+        }
+
+        .single-text-overflow {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .multi-text-overflow {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        iframe {
+            width: 800px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn">click me</button>
+    <div class="container">
+        <div class="inner multi-text-overflow">
+            当前上证指数：收盘：3676.56点, 涨跌：54.70点, 涨跌幅：1.51%;
+            评语：5000以下皆为抄底，建议继续持有。
+        </div>
+    </div>
+
+    <div><iframe src="iframe.html"></iframe></div>
+    <div><iframe src="https://www.infoq.cn/"></iframe></div>
+    <div><iframe src="https://time.geekbang.org/"></iframe></div>
+    <div><iframe src="https://www.geekbang.org/"></iframe></div>
+
+    <script type="text/javascript">
+        const btn = document.querySelector("#btn");
+        const innerEl = document.querySelector(".inner");
+
+        btn.onclick = function () {
+            console.log(">>>> clientWidth %d clientHeight %d", innerEl.clientWidth, innerEl.clientHeight);
+            console.log(">>>> offsetWidth %d offsetHeight %d", innerEl.offsetWidth, innerEl.offsetHeight);
+            console.log(">>>> scrollWidth %d scrollHeight %d", innerEl.scrollWidth, innerEl.scrollHeight);
+            // console.log('>>>> clientHeight', innerEl.clientHeight)
+        };
+
+    </script>
+</body>
+
+</html>

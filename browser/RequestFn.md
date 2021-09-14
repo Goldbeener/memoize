@@ -219,6 +219,10 @@ clearTimeout(timer);
 
 # shim VS polyfill
 
+# FPS
+Frames Per Second 每秒可以重新绘制的帧数
+
+
 
 # 参考文档
 + [Understanding JavaScript's requestAnimationFrame](http://www.javascriptkit.com/javatutors/requestanimationframe.shtml)
