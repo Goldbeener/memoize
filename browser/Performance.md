@@ -53,4 +53,33 @@ What are these so called Listeners to begin with?
 页面操作引起 JS Event Listener 数量显著增加问题？
 
 
+## 页面性能埋点监控
+
++ Core Web Vitals
+  + Cumulative Layour Shift(CLS)
+  + First Input Delay (FID)
+  + Largest Contentful Paint (LCP)
++ Other Web Vitals
+  + Time To First Byte(TTFB) 
+  + DomContentLoaded(DCL)
+  + First Paint(FP)
+  + First Contentful Paint(FCP)
+  + Time To Interactive(TTI)
+  + Custom Vitals
+    + Core Module Mounted
+    + domParserDuration
+    + domInteractive
++ Frames per Second(FPS)
+  + average
+  + max
+  + min
++ NetWork
+  + xhook
+  
+
+### 相关技术点
+1. performance
+2. sendBeacon
+3. xhook
+4. requestAnimationFrame
 
