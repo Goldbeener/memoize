@@ -4,7 +4,10 @@ main： 包入口文件
 
 browser：客户端侧的包，一般会使用`browser`字段指定的入口文件代替`main`字段指定的入口文件，特别是在包内包含有node侧不可用的功能
 
-module： 导出产物是符合ESM规范的
+module： 打包产物是符合ESM规范的
+`jsnext: main` 是与module相似的功能，只不过module更有可能成为标准
+
+> pkg.module 只是打包了一个使用es6模块规范导入/导出的包； 而其他的es6 features 比如箭头函数、class等还是需要单独使用babel转换，否则打包产物不能正常运行在低版本环境
 
 unpkg: 使用包的unpkg版本时，访问文件路径
 
