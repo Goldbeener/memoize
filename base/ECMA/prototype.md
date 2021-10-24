@@ -160,6 +160,9 @@ var obj = new Children(12);
 
 ### instanceof
 `instanceof` 用以检测构造函数的prototype属性是否出现在某个实例对象的原型链上
+
+说人话： 就是实例对象是否继承了某个构造函数属性， 对象是否是某个构造函数的实例
+
 ```js
 Object instanceof Object // Object构造函数 作为对象 继承了 Object
 Object instanceof Function // Object作为构造函数  继承了Function
