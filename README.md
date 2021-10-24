@@ -13,4 +13,7 @@
 │       └── README.md
 └── package.json
 ```
-7 directories, 6 files
+
+## TODO
++ git hook 过滤关键字
+    + 关键字 放置在 local文件中

@@ -158,7 +158,15 @@ var obj = new Children(12);
 ```
 
 
-有一个object 和 function 互等的问题？？？ 是什么来的？
+### instanceof
+`instanceof` 用以检测构造函数的prototype属性是否出现在某个实例对象的原型链上
+```js
+Object instanceof Object // Object构造函数 作为对象 继承了 Object
+Object instanceof Function // Object作为构造函数  继承了Function
+Function instanceof Function // Function作为构造函数 继承了Function
+Function instanceof Object // Function构造函数 作为对象 继承了 Object
+
+```
 
 
 
