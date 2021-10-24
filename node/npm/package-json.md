@@ -20,11 +20,19 @@ files: 包被安装的时候，应该包含的文件, 与`.npmignore`文件功�
 
 
 
-peerDependencies
+`peerDependencies in npm`
 
 一般在插件开发中比较常见，指定的是要使用该包的前提条件是必须安装哪些依赖；
 
 与devDependencies 和 Dependencies 的区别在于，这个peer依赖往往是更高层级的全局依赖，放在前者之内会造成包重复安装或者版本冲突
+
+`external in bundler[webpack/rollup]` 
+external 是打包工具中与peerDep含义完全一致的概念
+
+`npm install` 时， 不会安装peer deps；
+但是打包的时候，bundler会遍历依赖树，找到代码中引用的包，然后打包进打包产物；
+设置`external` 会告诉bundler不需要把这些包打包进结果产物中，即使这些依赖包已经被安装
+
 
 
 sideEffects

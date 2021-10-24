@@ -17,3 +17,13 @@ plugin 解决配置化问题
 **vue-cli create-react-app 脚手架工具**
 > webpack上层工具，在webpack基础上进一步封装，自动生成了一些webpack配置
 
+
+
+1. loader 和 plugin区别
+> loader 是一个转换器，将A类型文件转换成B类型文件
+> 本质上是因为webpack原生只支持js、json文件的识别和处理，需要将其他类型文件转换成webpack可以识别的文件类型
+
+> plugin 是一个扩展器 监听webpack打包过程中的某些节点，执行自定义扩展任务
+> 包括代码压缩、自动补全、环境变量注入、重写html文件等
+
+
