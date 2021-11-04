@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .outer {
+            width: 200px;
+            height: 50px;
+            background-color: #f60;
+        }
+
+        .inner {
+            width: 100px;
+            height: 30px;
+            background-color: #060;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+
+    <script type="text/javascript">
+        var outer = document.querySelector('.outer');
+        var inner = document.querySelector('.inner');
+
+        new MutationObserver(function (mutations) {
+            console.log('mutations');
+        }).observe(outer, {
+            attributes: true
+        });
+
+        function onClick() {
+            console.log('click');
+
+            setTimeout(function () {
+                console.log('timeout');
+            }, 0);
+
+            Promise.resolve()
+                .then(function () {
+                    console.log('promise1');
+                });
+
+            // Promise.resolve()
+            //     .then(function () {
+            //         console.log('promise2');
+            //     });
+
+            outer.setAttribute('data-random', Math.random());
+
+        }
+
+        inner.addEventListener('click', onClick);
+        outer.addEventListener('click', onClick);
+
+        // click div.inner
+        /**
+         *  click div.inner 触发一个event回调，注册一个callback
+         *  callback执行
+         *      click
+         *      一个hong re
+         */
+        inner.click();
+    </script>
+</body>
+
+</html>
