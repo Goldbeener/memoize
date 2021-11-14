@@ -56,9 +56,10 @@ What are these so called Listeners to begin with?
 ## 页面性能埋点监控
 
 + Core Web Vitals
-  + Cumulative Layour Shift(CLS)
   + First Input Delay (FID)
-  + Largest Contentful Paint (LCP)
+  + Largest Contentful Paint (LCP) 页面最大内容在可视区可见的时间点
+  + Total Blocking Time(TBT) FCP到TTI之间`所有长任务的阻塞时间之和`
+  + Cumulative Layour Shift(CLS)
 + Other Web Vitals
   + Time To First Byte(TTFB) 
   + DomContentLoaded(DCL)
@@ -75,7 +76,25 @@ What are these so called Listeners to begin with?
   + min
 + NetWork
   + xhook
-  
+
+### TBT
+
+> 长任务
+> 一个任务在主线程上运行超过50ms，就是长任务
+> 长任务阻塞时间： 任务总执行时间 - 50ms 
+#### TBT 改善点
+1. 对代码分割，延迟加载对首屏加载不重要的包
+2. 将代码分解成 工作更少、执行更快的函数  最小职能
+3. 减少DOM查询
+4. 将计算密集型任务交给Service Worker 或 Web Workers
+
+#### TBT与TTI的区别
+完全可交互： 页面主线程至少5s内都没有长任务，那么可以认为它是完全可交互的
+
+TBT只在FCP和TTI之间计算
+TTI识别主线程何时变为空闲时间
+TBT量化主线程在空闲之间的繁忙程度
+
 
 ### 相关技术点
 1. performance
