@@ -102,3 +102,10 @@ TBT量化主线程在空闲之间的繁忙程度
 3. xhook
 4. requestAnimationFrame
 
+
+
+### 参考文章
+- [ ] [Optimize website speed 加载优化](https://developer.chrome.com/docs/devtools/speed/get-started/)
+- [ ] [Analyze runtime performance](https://developer.chrome.com/docs/devtools/evaluate-performance/)
+- [ ] [Fix memory problems](https://developer.chrome.com/docs/devtools/memory-problems/)
+

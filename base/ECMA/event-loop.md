@@ -161,3 +161,14 @@ setTimeout(() => {
 ```
 
 
+## Promise
+
+### Promise 多个then嵌套问题
+promise.then(() => {})
+
+then注册就是将其放入微任务队列
+
+then的注册是在绑定的Promise的同步代码执行完成之后开始注册的
+then的注册是Promise同步代码的一部分
+then的注册与执行是不同的
+
