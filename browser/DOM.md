@@ -16,3 +16,4 @@ clientWidth = width + padding - 垂直滚动条宽度;
 
 
 offsetWidth = width + padding + border;
+
