@@ -66,7 +66,8 @@ server 匹配规则
 优先级由高到低
 ### location 配置
 location规则是用来匹配请求的`path`，        
-nginx location 将请求抽象为`对特定文件或文件夹的操作`，根据不同的location配置，决定返回给请求指定的 response header和 response body.
+nginx location 将请求抽象为`对特定文件或文件夹的访问`，
+根据不同的location配置，决定返回给请求指定的 response header和 response body.
 
 location 匹配规则
 ```bash
@@ -82,18 +83,25 @@ optional_modifier 有如下几种取值
 + ～*: 将location_match作为不区分大小写的正则表达式，来匹配path
 
 ```bash
+# 纯前缀匹配
 location /api {
     # 会匹配以/api开头的请求， /api, /api/v1, /api/v2, /api/user
 }
 
+# 精准匹配
 location = /api {
     # 只会匹配/api 不会匹配/api/v1等其他的
 }
 
+location ^~ /foo/bar {
+
+}
+
+# 大小写敏感
 location ~ \.(jpe?g|png|gif|ico)$ {
     # 会匹配以jpg、jpeg、png、icon结尾的图片资源，不会匹配*.PNG
 }
-
+# 大小写不敏感
 location ~* \.(jpe?g|png|gif|ico)$ {
     # 会匹配以jpg、jpeg、png、icon结尾的图片资源，以及对应的大写字母
 }
