@@ -78,7 +78,48 @@ new Vue()
                 组件的vnode没有children选项
                 普通元素节点的vnode是有children的
 
+生命周期
+    beforeCreated: 在初始化数据状态之前，因此在这个钩子里不能获取props、methods、data、computed、watch （按顺序注册）
+    created: 在初始化数据状态之后，因此可以获取到数据；但是在mount执行之前，因此不能获取DOM
+    beforeMount: 没什么说的，开始调用render生成vnode，调用update将vnode更新到真实DOM
+    mounted: 此时已经挂载了真实DOM，可以获取dom节点
 
+组件注册
+    全局组件注册
+        mergeOptions
+    局部组件注册
+
+## 响应式
+### 解决什么问题？
+1. 我需要修改哪一块的DOM？
+2. 我的修改频率和性能是不是最优的?
+3. 我需要对每一次的修改都去操作dom吗？
+4. 我需要case by case去修改dom的逻辑吗？
+
+### 响应式对象
+
+```js
+Object.defineProperty(obj, key, descriptor)
+```
+
+### initState
+按照如下顺序初始化数据
+1. initProps
+2. initMethods
+3. initData
+4. initComputed
+5. initWatch
+
+后初始化的自然可以使用之前已经初始化完成的
+在data里面可以使用props和methods
+
+#### initProps
+1. 将props变成响应式 `defineReactive`
+2. 将props代理到vm上，`proxy`使得通过this可以访问
+
+#### initData
+1. 将data中的属性代理到vm上，`proxy`使得通过this可以访问
+2. `observe`监测数据变化
 
 ## 元素操作
 ### document.createElementNS

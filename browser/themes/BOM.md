@@ -5,6 +5,13 @@ web浏览器暴露的所有对象组成
 
 没有标准的实现，没有严格的定义，浏览器厂商可以自由实现
 
++ document
++ location
++ history
++ navigator
++ screen
++ frames
+
 
 ## URLSearchParams
 构造函数 
