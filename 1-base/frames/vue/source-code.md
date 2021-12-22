@@ -119,7 +119,93 @@ Object.defineProperty(obj, key, descriptor)
 
 #### initData
 1. 将data中的属性代理到vm上，`proxy`使得通过this可以访问
-2. `observe`监测数据变化
+2. `observe` 创建响应式数据 监测数据变化
+   1. 依赖收集
+   2. 派发更新
+      1. 并不会在每次数据变更的时候都触发watcher回调，而是把所有的watcher先添加到一个队列里，在`nextTick`后执行 `flushSchedulerQUeue`
+      2. 执行的时候要先排序 保证
+         1. 组件的更新由父到子
+         2. 用户的watcher要优先于渲染watcher
+         3. 如果子组件在父组件中的watcher中被销毁，那么子组件对应的watcher会被跳过
+      3. 在清空队列的过程中，可能会实时插入新的
+
+```js
+function defineReactive(obj, key) {
+    const conf = Object.getOwnPropertyDescript(obj, key);
+
+    Object.defineProperty(obj, key {
+        enumerable: true,
+        configurable: true,
+        get: function reactiveGetter() {
+            const value = getter.call(obj);
+            dep.append() // 收集依赖
+            return 
+        }, 
+        set: function reactiveSetter(newVal) {
+            setter.call(obj, newVal); // 设置新值
+            dep.notify(); // 通知依赖更新
+        }
+    })
+}
+
+class Observer {
+    constructor(value) {
+        this.value = value;
+        this.dep = new Dep();
+        this.vmCount = 0;
+        value.__ob__ = this;
+
+        if (Array.isArray(value)) {
+            // 转化数组
+            this.observeArray(value)
+        } else {
+            // 转化对象
+            this.walk(value)
+        }
+
+    }
+
+    // 响应化对象 通过遍历对象的所有属性 将所有属性转换成响应式
+    walk(value) {
+        const keys = Object.keys(value);
+        for(let i = 0; i < keys.length; i++) {
+            defineReactive(obj, keys[i])
+        }
+    }
+
+    // 响应化数组
+    observeArray(value) {
+        for(let i = 0; i < value.length; i++) {
+            observe(value[i]);
+        }
+    }
+}
+
+function observe(data) {
+    if (typeof data !== 'object' || (data instanceOf VNode)) {
+        return
+    }
+    if (data.__ob__ && data.__ob__ instanceof Observer ) {
+        reuturn data.__ob__
+    }
+
+    // 返回对象的观察者实例
+    return new Observer(data)
+}
+observe(data);
+
+```
+
+#### nextTick
+Vue在更新DOM时是异步更新的
+    侦听到数据变化之后，开启一个队列，缓冲在同一事件循环中发生的所有数据变更
+    如果同一个watcher被多次触发，只会被推入到对立中一次
+    在事件循环的下一个tick中执行更新工作
+在下次DOM更新循环结束之后执行延时回调
+
+主线程的执行过程就是一个tick
+
+核心思想就是： 先把要执行的任务压入一个callback队列中；然后一次性的执行
 
 ## 元素操作
 ### document.createElementNS
