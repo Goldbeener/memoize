@@ -36,4 +36,10 @@ sudo chown -R newOwner /path/to/folder
 ## 查看日志
 ```bash
 tail -f ./xxx.log | grep 'xxx'
-``
+```
+
+
+## CLI命令
+`ctrl + u` 删除已输入的命令到开始
+`ctrl + y` 可以恢复被ctrl+y删除的内容
+`ctrl + w` 删除已输入命令的最后一个单词
