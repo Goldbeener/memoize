@@ -15,5 +15,7 @@
 ```
 
 ## TODO
-+ git hook 过滤关键字
-    + 关键字 放置在 local文件中
++ git hook 
+    + 关键字过滤  关键字放置在 local文件中
+    + publish之前生成一份最新的gitbook目录
++ gitbook 样式定制
