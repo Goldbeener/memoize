@@ -58,17 +58,13 @@ class SummaryMaker {
             ignore: ['./node_modules/**/*', './test/**/*', './package?(-lock).json', './scripts/**/*']
         };
         const allFiles = await this.getAllFiles(pattern, conf);
-        console.log('🚀🚀🚀 ~ init ~ allFiles', allFiles);
-        // 得到的是指定路径下所有的文件列表
-        /**
-         * 希望得到的是
-         * {
-         *      level1: {
-         *          level2: [file1, file2, ...]
-         *          file3: {}
-         *      }
-         * }
-         * */ 
+        fs.outputFile('./SUMMARY.md', allFiles.join('\r\n'))
+            .then(res => {
+                console.log('生成目录成功');
+            })
+            .catch(err => {
+                console.log('生成目录失败', err);
+            })
     }
 }
 
