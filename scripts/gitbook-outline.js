@@ -33,6 +33,7 @@ class SummaryMaker {
             title = args[args.length - 1].split('.')[0];
         }
         // 输出来看 貌似是按照顺序的 暂时不需要处理顺序
+        // md的空格 问题需要注意
         return `${Array((pathInfo.length - 1)).fill('\t').join('')}* [${title}](${path})`
     }
     getAllFiles(pattern, conf) {
@@ -55,10 +56,11 @@ class SummaryMaker {
         // TODO 合并用户自定义配置 和 默认的配置
         const conf = options || {
             nodir: false,
-            ignore: ['./node_modules/**/*', './test/**/*', './package?(-lock).json', './scripts/**/*']
+            ignore: ['./node_modules/**', './test/**', './package?(-lock).json', './scripts/**']
         };
         const allFiles = await this.getAllFiles(pattern, conf);
-        const content = allFiles.join('\t\n');
+        const content = allFiles.join('\t\n'); // md文件的换行问题
+        // 是否需要先删除再创建？ 待确认
         fs.outputFile('./SUMMARY.md', content)
             .then(res => {
                 console.log('生成目录成功');
