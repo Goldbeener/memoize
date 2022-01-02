@@ -58,7 +58,7 @@ class SummaryMaker {
             ignore: ['./node_modules/**/*', './test/**/*', './package?(-lock).json', './scripts/**/*']
         };
         const allFiles = await this.getAllFiles(pattern, conf);
-        fs.outputFile('./SUMMARY.md', allFiles.join('\r\n'))
+        fs.outputFile('./SUMMARY.md', allFiles.join(Array(4).fill('\xa0').join('')))
             .then(res => {
                 console.log('生成目录成功');
             })
