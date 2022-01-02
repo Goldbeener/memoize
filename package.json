@@ -4,7 +4,8 @@
   "description": "npm  指定author的值？ 常见的npm命令",
   "main": "index.js",
   "scripts": {
-    "update:readme": "tree . ｜ > README.md"
+    "update:readme": "tree . ｜ > README.md",
+    "make": "node ./scripts/gitbook-outline.js"
   },
   "keywords": [],
   "author": "cumtadu <cumtadu@gmail.com>",
@@ -13,5 +14,9 @@
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "glob": "^7.2.0"
   }
 }
