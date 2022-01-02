@@ -33,7 +33,7 @@ class SummaryMaker {
             title = args[args.length - 1].split('.')[0];
         }
         // 输出来看 貌似是按照顺序的 暂时不需要处理顺序
-        return `${Array((pathInfo.length - 1) * 4).fill('\xa0').join('')}* [${title}](${path})`
+        return `${Array((pathInfo.length - 1)).fill('\t').join('')}* [${title}](${path})`
     }
     getAllFiles(pattern, conf) {
         return new Promise(resolve => {
@@ -58,7 +58,8 @@ class SummaryMaker {
             ignore: ['./node_modules/**/*', './test/**/*', './package?(-lock).json', './scripts/**/*']
         };
         const allFiles = await this.getAllFiles(pattern, conf);
-        fs.outputFile('./SUMMARY.md', allFiles.join(Array(4).fill('\xa0').join('')))
+        const content = allFiles.join('\t\n');
+        fs.outputFile('./SUMMARY.md', content)
             .then(res => {
                 console.log('生成目录成功');
             })
