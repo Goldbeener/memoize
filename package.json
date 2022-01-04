@@ -1,13 +1,18 @@
 {
   "name": "memoize",
   "version": "0.1.0",
-  "description": "npm  指定author的值？ 常见的npm命令",
+  "description": "knowledge base of fe developers",
   "main": "index.js",
   "scripts": {
-    "update:readme": "tree . ｜ > README.md",
-    "make": "node ./scripts/gitbook-outline.js"
+    "make": "node ./scripts/gitbook-outline.js",
+    "pub": "npm run make &&"
   },
-  "keywords": [],
+  "keywords": [
+    "FE",
+    "knowledge base",
+    "sourceMap",
+    "second brain"
+  ],
   "author": "cumtadu <cumtadu@gmail.com>",
   "license": "ISC",
   "devDependencies": {

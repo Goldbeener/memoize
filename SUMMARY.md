@@ -25,6 +25,7 @@
 	* [linux](./1.base/linux)	
 		* [0_terms](./1.base/linux/0_terms.md)	
 		* [command](./1.base/linux/command.md)	
+		* [shell](./1.base/linux/shell.md)	
 	* [RegExp](./1.base/RegExp)	
 		* [index](./1.base/RegExp/index.md)	
 	* [typescript](./1.base/typescript)	
