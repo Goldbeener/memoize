@@ -43,4 +43,6 @@ sideEffects
 > unpkg is a fast, global content delivery network for everything on npm. Use it to quickly and easily load any file from any package using a URL like:  
 > `unpkg.com/:package@:version/:file`
 
+npm包的公共cdn访问路径
+
 npm package.json文件中专门有一个字段`unpack`来指定，从unpkg中加载文件时返回的目标文件 
