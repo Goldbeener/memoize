@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>testststt</h1>
+    <script type="text/javascript">
+        function multiRequest(urls, maxNumber) {
+            console.log('>>>>sss');
+            let sendCount = 0;
+            let finishedCount = 0;
+            let result = [];
+            let total = urls.length;
+
+            return new Promise((resolve, reject) => {
+                // 使用while循环 一次性发起maxNumber个并发请求
+                while (sendCount < maxNumber && finishedCount < total) {
+                    // 触发请求
+                    next()
+                }
+
+                function next() {
+                    let url = urls[sendCount];
+                    let current = sendCount++;
+                    console.log('> fetch')
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then(res => {
+                            handleResult(current, res)
+                        })
+                        .catch(error => {
+                            handleResult(current, error)
+                        })
+                }
+
+                function handleResult(current, response) {
+                    finishedCount++;
+                    result[current] = response;
+                    // 在请求结束之后 判断 符合条件发起后续请求
+                    if (sendCount < total) {
+                        next();
+                    }
+                    if (finishedCount >= total) {
+                        resolve(result);
+                    }
+                }
+            })
+        }
+        const urls = [
+            '/api/foo1',
+            '/api/foo2',
+            '/api/foo3',
+            '/api/foo4',
+            '/api/foo5',
+            '/api/foo6',
+            '/api/foo7',
+            '/api/foo8',
+            '/api/foo9',
+        ];
+        multiRequest(urls, 3)
+            .then(res => {
+                console.log('>>>>', res);
+            })
+            .catch(err => {
+                console.log('🚀🚀🚀 ~ err', err);
+            })
+    </script>
+</body>
+
+</html>

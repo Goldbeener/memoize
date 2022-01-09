@@ -125,6 +125,9 @@ xhr.ontimeout = function () {
 ### 使用xhr实现请求传输进度
 ```js
 xhr.onprogress = function(event) {
+    // lengthComputable: boolean 标识测量进度是否可以被测量，底层流程将需要完成的总工作量和已经完成的工作量是否已经可以计算
+    // loaded number(64位无符号整数) 标识底层流程已经执行的工作量 在http下载资源中仅表示内容本身的部分，不包含首部和其他开销
+    // total number(64位无符号整数) 表示正在执行的底层流程的工作总量，在http请求中还是仅表示内容本身部分，不表示首部和其他开销
     const { lengthComputable, loaded, total } = event;
     if (lengthComputable) {
         const progress = ((loaded / total) * 100).toFixed(2) + '%';
@@ -355,6 +358,58 @@ fetch(url)
 
 ```
 
+
+## 并发请求限制实现
+```js
+/**
+ * @param urls [string] 请求数组
+ * @param params [object] 请求参数
+ * @param maxNumber number 最大并发请求数
+*/
+function multiRequest(urls, params, maxNumber) {
+    let sendCount = 0;
+    let finishedCount = 0;
+    let result = [];
+    let total = urls.length;
+
+    return new Promise((resolve, reject) => {
+        // 使用while循环 一次性发起maxNumber个并发请求
+        while(sendCount < maxNumber && finishedCount < total) {
+            // 触发请求
+            next()
+        }
+
+        function next() {
+            let url = urls[sendCount];
+            let param = params[sendCount];
+            let current = sendCount++;
+
+            fetch(url, { data: param })
+                .then(res => res.json()})
+                .then(res => {
+                    handleResult(current, res)
+                })
+                .catch(error => {
+                    handleResult(current, error)
+                })
+
+        }
+
+        function handleResult(current, response){
+            finishedCount++;
+            result[current] = response;
+            // 在请求结束之后 判断 符合条件发起后续请求
+            if (sendCount < total) {
+                next();
+            }
+            if (finishedCount >= total) {
+                resolve(result);
+            }
+        }
+    })
+}
+
+```
 
 ## sendBeacon
 
