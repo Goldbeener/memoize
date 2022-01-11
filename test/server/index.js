@@ -22,8 +22,18 @@ app.use(async ctx => {
         ctx.body = {
             message: 'ss',
         }
+    } else if(ctx.request.url.startsWith('/js')) {
+        const path = '../js/request-queue.js';
+        const src = fs.createReadStream(path);
+        const { size } = fs.statSync(path);
+        ctx.response.set("content-type", 'application/javascript');
+        ctx.response.length = size;
+        ctx.body = src;
     }
+
 });
 
 app.listen(3000);
 console.log('app listening on port 3000');
+
+

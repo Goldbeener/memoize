@@ -182,6 +182,7 @@ init: 配置项对象
     + referrer
     + referrerPolicy
     + integrity
+    + singal: AbortController实例  取消fetch请求的标识
 
 ```
 
@@ -322,6 +323,10 @@ $brn.onclick = () => {
     controller.abort();
 }
 
+signal.onabort = function () {
+    // 中断监听事件
+}
+
 ```
 
 #### 使用fetch实现超时中断
@@ -357,6 +362,9 @@ fetch(url)
     })
 
 ```
+
+#### 使用fetch实现断点续传
+
 
 
 ## 并发请求限制实现
@@ -410,6 +418,8 @@ function multiRequest(urls, params, maxNumber) {
 }
 
 ```
+
+
 
 ## sendBeacon
 

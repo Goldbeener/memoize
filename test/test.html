@@ -10,65 +10,53 @@
 
 <body>
     <h1>testststt</h1>
+    <button type="button" id="btn">按钮</button>
+    <script src="./js/request-queue.js" type="text/javascript"></script>
     <script type="text/javascript">
-        function multiRequest(urls, maxNumber) {
-            console.log('>>>>sss');
-            let sendCount = 0;
-            let finishedCount = 0;
-            let result = [];
-            let total = urls.length;
+        const btn = document.getElementById("btn");
+        btn.onclick = function () {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/xhr');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.responseType = 'json';
+            xhr.withCredentials = true;
 
-            return new Promise((resolve, reject) => {
-                // 使用while循环 一次性发起maxNumber个并发请求
-                while (sendCount < maxNumber && finishedCount < total) {
-                    // 触发请求
-                    next()
+            // 请求被后端处理完成
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // success
+                    console.log('>>>>', xhr.response);
+                } else {
+                    // 服务器处理了但是失败了
                 }
+            }
+            xhr.onerror = function () {
+                console.log('网络错误或者是跨域被拦截')
+            }
 
-                function next() {
-                    let url = urls[sendCount];
-                    let current = sendCount++;
-                    console.log('> fetch')
-                    fetch(url)
-                        .then((response) => response.json())
-                        .then(res => {
-                            handleResult(current, res)
-                        })
-                        .catch(error => {
-                            handleResult(current, error)
-                        })
-                }
-
-                function handleResult(current, response) {
-                    finishedCount++;
-                    result[current] = response;
-                    // 在请求结束之后 判断 符合条件发起后续请求
-                    if (sendCount < total) {
-                        next();
-                    }
-                    if (finishedCount >= total) {
-                        resolve(result);
-                    }
-                }
-            })
+            xhr.send(JSON.stringify({ foo: 'bar' }));
         }
-        const urls = [
-            '/api/foo1',
-            '/api/foo2',
-            '/api/foo3',
-            '/api/foo4',
-            '/api/foo5',
-            '/api/foo6',
-            '/api/foo7',
-            '/api/foo8',
-            '/api/foo9',
-        ];
-        multiRequest(urls, 3)
+
+        let progress = 0;
+        fetch('/')
             .then(res => {
-                console.log('>>>>', res);
-            })
-            .catch(err => {
-                console.log('🚀🚀🚀 ~ err', err);
+                const contentLength = res.headers.get('Content-Length');
+                const pump = function (reader) {
+                    return reader.read().then(result => {
+                        if (result.done) {
+                            return
+                        }
+                        const chunk = result.value;
+
+                        progress += chunk.byteLength;
+                        console.log((progress / contentLength * 100).toFixed(2) + '%');
+
+                        return pump(reader)
+                    })
+                }
+                return pump(res.body.getReader())
+            }).catch(e => {
+                console.log('🚀🚀🚀 ~ e', e);
             })
     </script>
 </body>
