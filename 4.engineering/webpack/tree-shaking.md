@@ -3,10 +3,34 @@
 ## 是什么
 移除js上下文中的未引用代码   DCE（dead code elimination）
 
+### 有什么好处
+减小包体积，提高性能
+
 > 传统的DCE消灭不可能执行的代码
 > Tree-shaking 更关注消除没有用到的代码
 
+### DCE VS Tree-shaking
+**DCE**
++ 代码不会被执行，不可到达的，比如return 语句之后的语句
++ 代码执行的结果不会被用到
++ 代码只会影响死变量 只写不读
+
+**Tree-shaking**
+消除引用了但是没有用到的模块，处理的是模块级别的依赖关系    
+`更关注无用模块的消除`
+
 依赖ES6模块语法的静态结构特性
+
+
+> 在前端领域 DCE是和Tree-shaking配合使用的
+> DCE消除模块内部的无用变量、函数、类
+> tree-shaking消除引用了但没有使用的模块
+
+### 前端打包工具
+webpack 和 rollup 都分别实现了tree-shaking 
+
+webpack 没有消除模块中未使用的变量
+rollup 会将模块中没有使用的变量、函数、类全部清除掉
 
 ### sideEffects
 package.json中有`sideEffects`属性，作为标记，向compiler提供提示，说明项目中的哪些文件是`pure(纯es module)`，可以安全的删除文件中的未使用部分
