@@ -3,11 +3,71 @@
 ## 是什么
 移除js上下文中的未引用代码   DCE（dead code elimination）
 
+`只有在es6引入模块规范之后才得以实现`
+
+因为tree-shaking要求模块必须是静态的，静态模块规范在编译时就能确定模块的依赖关系
+
+> CommonJS 动态模块规范，引入语句中可以使用参数，也可以在条件语句中引入模块
+> 除非在执行时才能确认模块的依赖关系，因此不能做模块静态依赖分析，做tree-Shaking优化
+
+```js
+// 条件导入
+var myModule;
+if (condition) {
+    myModule = require('module-a')
+} else {
+    myModule = require('module-b')
+}
+
+// 模块参数中含有变量
+var otherModule = require(`${path}-module`)
+```
+
+
+ES6 的静态模块规范：
+1. 要求所有的导入语句必须在模块顶层，不能在if条件语句中
+2. 模块路径不能使用变量
+
+通过这种限制，使得模块的依赖关系在编译时就能确认
+
 ### 有什么好处
 减小包体积，提高性能
 
++ 删除引入但是未使用的代码块（函数、类等）
++ 删除对象中未使用的属性
+
 > 传统的DCE消灭不可能执行的代码
 > Tree-shaking 更关注消除没有用到的代码
+
+
+### sideEffects
+正常情况下引入了但是未使用的代码都需要被删除
+但是，某些情况下，引入了，但是没有显式的使用，而是作为项目整体，需要被打包的
+
+比如： polyfill 
+
+这些称之为 `副作用`
+
+打包工具不能正确识别副作用，需要开发者手动声明。
+
+
+package.json中有`sideEffects`属性，作为标记，向compiler提供提示，说明项目中的哪些文件是`pure(纯es module)`，可以安全的删除文件中的未使用部分
++ 如果项目所有的代码都是纯es module，不包含副作用，那么可以直接设置为false
++ 如果部分有副作用，可以传递一个数组，数组每一项是有副作用的文件路径
+
+
+### 限制
+1. 使用ES6模块规范导入导出
+2. 禁用babel对import和export的转义
+3. 导出粒度要细，这样才能更好的发挥tree-shaking的功效
+4. 避免模块级别的副作用
+
+### 模块不能被tree-shaking时的操作 及工具
+1. ModuleConcatenationPlugin webpack插件 
+   1. 最初，webpack把每个模块都包一层IIFE，但是这会影响执行效率
+   2. 模仿roll-up和Clousure Compiler， 将多个模块联合起来，包在一个IIFE下，这样有更好的执行效率
+   3. 默认情况下production模式会开启，其他模式下需要手动开启
+2. eslint-plugin-tree-shaking 标示出lib中所有可能影响tree-shaking的因素
 
 ### DCE VS Tree-shaking
 **DCE**
@@ -31,13 +91,6 @@ webpack 和 rollup 都分别实现了tree-shaking
 
 webpack 没有消除模块中未使用的变量
 rollup 会将模块中没有使用的变量、函数、类全部清除掉
-
-### sideEffects
-package.json中有`sideEffects`属性，作为标记，向compiler提供提示，说明项目中的哪些文件是`pure(纯es module)`，可以安全的删除文件中的未使用部分
-+ 如果项目所有的代码都是纯es module，不包含副作用，那么可以直接设置为false
-+ 如果部分有副作用，可以传递一个数组，数组每一项是有副作用的文件路径
-
-文件的副作用是什么？
 
 ## 怎么实现
 原理
