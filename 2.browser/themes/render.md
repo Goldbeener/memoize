@@ -1,6 +1,8 @@
 # 渲染流程
 **什么是渲染？**
 将`web content`转换成`像素点`绘制在屏幕上
+
+web content：页面内容
 web content 就是页面中的所有元素，常见的web content
     Html
     css
@@ -13,16 +15,21 @@ web content 就是页面中的所有元素，常见的web content
     webVR
     PDF
 
+像素点
+影像显示的最小单元，有明确的位置和分配的色彩数值，有一定的面积
+
+> 操作系统提供图形库将像素画到屏幕上，当前绝大多数操作系统使用OpenGL作为图形库的标准API
+
 **渲染的2个目标**
 1. 将content转换成像素点
 2. 同时产生一个数据结构，方便后续高效的更新
-   1. 可能会导致更新的行为有
-   2. js脚本
-   3. 用户交互
-   4. 异步加载
-   5. 动画
-   6. 滚动
-   7. 缩放
+   1. 可能会导致更新的行为有：
+      1. js脚本
+      2. 用户交互
+      3. 异步加载
+      4. 动画
+      5. 滚动
+      6. 缩放
 
 渲染步骤
 ## 1. 解析
@@ -116,3 +123,27 @@ DOM --> style --> layout --> **compisiting** --> paint --> raster --> gpu
 ## references
 + [一颗像素的诞生](https://zhuanlan.zhihu.com/p/55192083)
 + [lifecycle of pixels](https://docs.google.com/presentation/d/1boPxbgNrTU0ddsc144rcXayGA_WF53k96imRH8Mp34Y/edit#slide=id.ga884fe665f_64_262)
+
+
+### 哪些样式会产生新的合成图层
++ document 默认是一个图层
++ position: fixed
+  + position: relative\absolute\sticky 都不会产生新的图层
+  + 并且当定位z-index是正值的时候，仅产生自己的新图层
+  + 当z-index是负值的时候，会影响html产生一个新的图层，导致出现3个图层
++ backface-visibility: hidden 
++ bix-blend-mode: 非normal
++ will-chang: trasform 设置了will-change属性
++ 3d transform transform： translate3d/translateZ
++ css实现opacity、transform、filter、backdropfilter 动画转换(transition\animation)
+
+
+GPU加速
+GPU是图形处理器，专门处理和绘制图形相关的硬件。
+正常情况下，浏览器会智能的对某些元素使用GPU加速，提高渲染性能
+
+开发者可以通过某些手段，对某些元素显示的指定使用GPU加速
+1. transform: translate3d\translateZ\ 等，3dtransform
+2. will-change： transform、opacity、filter等
+
+谨慎使用
