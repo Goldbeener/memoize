@@ -37,9 +37,15 @@
    3. 
 5. 闭包是什么
 6. prefetch和preload的区别
+   1. preload 告诉浏览器尽快下载并缓存指定的资源（js/css）
+      1. 用在加载完页面之后，加速首屏后续资源的加载
+      2. 下载完成之后，不会执行，等到需要的时候再执行
+   2. prefetch 告诉浏览器在空闲时间下载并缓存指定资源（js、css）
+      1. 优先级不高
+      2. 用在加速非首屏资源的加载
 7. es6特性
 8. css垂直水平居中
-9. 输入网址后，浏览器都做了什么
+9.  输入网址后，浏览器都做了什么
 10. 引入cdn字体，会发生什么问题
 11. 遍历对象key
 12. 移动端页面怎么适配
@@ -51,13 +57,23 @@
 15. webpack的一些问题
 
 ## Vue
-1. Vue.nextTick原理
-   1. 原理
+1. vue双向绑定原理
+   1. 数据流向 问题  上层数据变更下层更新，下层数据变更上层也更新
+   2. v-model 
+      1. 语法糖
+      2. 拆分为一个prop 和 一个绑定事件
+         1. 默认是value-imput组合
+         2. 可以再model属性里面配置
+2. Vue.nextTick原理
+   1. 原理 event-loop 下一个tick执行
    2. 实现
-2. vue双向绑定原理
+      1. callbacks 队列维护所有的cb
+      2. timeFunc 
+      3. flushCallbacks
+         1. 循环清空callback队列中的任务
 3. Vue响应式原理
-   1. 是什么
-   2. 怎么实现
+   1. 是什么   页面状态和DOM结构自动同步
+   2. 怎么实现 Object.defineProperty();
 4. computed 源码实现
 5. computed 与 watch的区别
 6. v-if和v-show的区别
@@ -68,7 +84,7 @@
 7. 在div上既设置display:none，也设置v-show="true"，结果会怎样？
     div 会被隐藏
 8. keep-alive是用来干嘛的？
-9. mixins用法
+9.  mixins用法
 10. vue双向绑定中，收集数据变化的依赖是什么时候收集的？？
 11. vue生命周期渲染（父子渲染顺序）
     1. 父beforeCreate
@@ -112,6 +128,12 @@ for (var i = 0; i < 5; i++) {
 
 // let 或者闭包
 
+var a = 1;
+(function a(){
+   // 'use strict'
+   var a = 2;
+   console.log(a);
+})()
 
 function o () {
   this.name = '222'
@@ -190,6 +212,11 @@ log(6);
 11. 用户在地址栏输入（包括输入文字、url、script标签等）后，浏览器都做了什么
 12. 浏览器请求不同的资源（例如浏览器请求html、CSS、image）是如何做的、如何区分请求的资源
 13. 实现 输入 20200820164516 返回 2020年08月20日 16:45:16 根据写的函数展开问
+
+```js
+
+
+```
 
 简答题：
 1.什么是函数节流，为什么要使用函数节流，如何实现？
