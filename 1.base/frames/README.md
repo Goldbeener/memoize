@@ -3,6 +3,13 @@
 > 运行效率是浏览器层面的
 > 前端开发者只是浏览器的使用者，运行效率的提要需要依赖浏览器的升级
 
+针对状态与UI的一致问题，各个框架的解决方案是什么？
+1. vue
+2. react
+3. svelte
+
+
+
 + [当前前端框架存在的根本原因](https://medium.com/dailyjs/the-deepest-reason-why-modern-javascript-frameworks-exist-933b86ebc445)
 
 ## Vue
