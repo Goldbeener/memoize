@@ -53,3 +53,46 @@ vue 官网术语
 + 运行时 创建vue实例，渲染并处理虚拟dom的代码
 
 > svelte 是纯编译时
+
+
+# 核心要素
+1. 框架基本功能
+2. 构建产物格式定制
+   1. global iife
+   2. esm   [package.json - module]
+   3. esm-browser
+   4. cjs
+3. 完善的日志信息
+4. 错误处理
+   1. 统一错误处理
+5. HMR
+6. tree-shaking
+   1. esm tree-shaking 
+   2. 副作用 调用函数会对外部产生影响
+   3. dce 实现？ dce与tree-shaking ？？？
+7. 尽可能小的包体积
+   1. tree-shaking
+   2. 特性开关
+
+
+# Vue3的设计思路
+
+声明式的描述ui
+1. 模板描述    ---  sfc思路
+2. js对象描述  ---  虚拟dom的思路
+
+而最终，sfc模板文件还是通过**编译器**被编译成js对象，最终实现渲染
+
+**编译器**
+
+组件要渲染的内容是通过**渲染函数**来描述的；也就是render函数
+
+render函数的返回值是**虚拟dom**
+
+vue通过**渲染器**将虚拟dom转换成真实dom并渲染
+
+**渲染器**
+1. 虚拟dom转换成真实dom
+2. dom diff 更新
+
+**组件的本质** 一组dom元素的封装
