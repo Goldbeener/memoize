@@ -69,7 +69,7 @@ vue 官网术语
 6. tree-shaking
    1. esm tree-shaking 
    2. 副作用 调用函数会对外部产生影响
-   3. dce 实现？ dce与tree-shaking ？？？
+   3. dce 实现？ dce与tree-shaking ？？？ [tree-shaking](../../../../../4.engineering/webpack/tree-shaking.md)
 7. 尽可能小的包体积
    1. tree-shaking
    2. 特性开关
@@ -81,11 +81,11 @@ vue 官网术语
 1. 模板描述    ---  sfc思路
 2. js对象描述  ---  虚拟dom的思路
 
-而最终，sfc模板文件还是通过**编译器**被编译成js对象，最终实现渲染
+而最终，sfc模板文件还是通过**编译器**被编译成渲染函数（js对象），最终再渲染成真实dom，实现渲染
 
 **编译器**
 
-组件要渲染的内容是通过**渲染函数**来描述的；也就是render函数
+组件要渲染的内容是通过**渲染函数**来描述的；也就是render函数。
 
 render函数的返回值是**虚拟dom**
 
