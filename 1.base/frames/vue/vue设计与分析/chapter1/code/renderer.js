@@ -6,8 +6,13 @@
  * 
  * js对象更加灵活，在vue中是一渲染函数的形式来体现的，渲染函数的返回值就是对dom的抽象出来的js对象，即虚拟dom vnode
  * 模板 可以通过编译器转换成渲染函数，即
+ * 
+ * vnode 类型
+ * 1. string
+ * 2. function
  * */ 
 
+// 这就是虚拟dom
 const vnode = {
     tag: 'div',
     props: {
@@ -15,9 +20,34 @@ const vnode = {
     }, 
     children: 'click me'
 }
-
-function render(vnode, container) {
-    // dom创建
+// 组件
+const myComponent = function (props) {
+    return {
+        tag: 'div',
+        props: {
+            onClick: () => alert('hello')
+        }, 
+        children: 'click me'
+    }
+}
+const comp_obj_vnode = {
+    render() {
+        return {
+            tag: 'div',
+            props: {
+                onClick: () => alert('hello')
+            }, 
+            children: 'im a obj component'
+        }
+    }
+}
+const comp_func_vnode = {
+    tag: myComponent
+}
+const comp_obj = {
+    tag: comp_obj_vnode
+}
+function mountElement(vnode, container) {
     const el = document.createElement(vnode.tag)
 
     // 属性
@@ -37,4 +67,26 @@ function render(vnode, container) {
     }
 
     container.appendChild(el)
+}
+
+function mountComponent(vnode, container) {
+    const tag = vnode.tag;
+    let subTree ;
+    if (typeof tag === 'function') {
+        subTree = tag()
+    } else {
+        subTree = tag.render()
+    }
+    
+    return mountElement(subTree, container)
+}
+
+function render(vnode, container) {
+    // dom创建
+    if (typeof vnode.tag === 'string') {
+        mountElement(vnode, container);
+    } else {
+        mountComponent(vnode, container)
+    }
+    
 }

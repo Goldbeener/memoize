@@ -40,3 +40,34 @@
    2. CSR
    3. SSR
    4. 同构渲染
+
+
+
+
+# Vue3的新特性
+1. composition API
+2. sfc setup 语法
+3. teleport
+   1. 组件的逻辑部分转移： 逻辑上属于组件，但是技术上最好转移到其他位置
+   2. demo： 模态框
+4. 片段
+   1. 组件可以包含多个根节点
+5. 触发组件选项
+   1. 定义自定义事件
+   2. 验证自定义事件 类似props
+   3. v-model 使用
+      1. v-model 指定
+      2. 多个v-model
+      3. v-model 修饰符
+         1. trim
+         2. number
+         3. lazy
+         4. 自定义 修饰符
+            1. <modelName>Modifiers 对象 包含所有该model上的所有修饰符
+6. 状态驱动的动态css
+   1. 在`css scope`中使用 `script` 中定义的变量
+7. css 规则
+   1. 全局规则
+   2. 针对插槽样式
+   3. 深层选择器
+8. 支持自定义渲染器
