@@ -6,7 +6,9 @@
 针对状态与UI的一致问题，各个框架的解决方案是什么？
 1. vue
 2. react
-3. svelte
+3. svelte 
+   1. 纯编译时框架 没有运行时
+   2. 无virtual dom
 
 
 
