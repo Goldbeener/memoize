@@ -47,6 +47,7 @@
 # Vue3的新特性
 1. composition API
 2. sfc setup 语法
+   1. 直接把带有setup标识的script标签内的所有内容，暴露给组件使用 
 3. teleport
    1. 组件的逻辑部分转移： 逻辑上属于组件，但是技术上最好转移到其他位置
    2. demo： 模态框
@@ -71,3 +72,28 @@
    2. 针对插槽样式
    3. 深层选择器
 8. 支持自定义渲染器
+
+
+
+# 自定义指令
+对普通dom元素进行底层操作，需要使用到自定义指令；
+
+> 对于自定义组件，指令作用在组件的根元素
+> 对于多个根元素的组件，指令会被忽略失效，同时会有报错
+
+## 钩子函数
++ created v-on绑定事件调用之前 调用
++ beforeMount
++ mounted 在绑定的父组件被挂载之前 调用
++ beforeUpdate
++ updated 在包含组件的VNode及其子组件的VNode更新之后 调用
++ beforeUnmount
++ unmounted
+
+## 指令数据源
++ value  是指令等号右边的输入，可以是任意合法的js表达式
++ argument 指令等号左边，通过冒号，传入的参数
+
+```
+v-directive:[argument] = value
+```

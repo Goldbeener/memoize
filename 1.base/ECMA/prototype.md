@@ -12,17 +12,22 @@
 function myNew(fn, ...args) {
     // 创建一个新对象
     var obj = {};
-
     // 把新对象的原型指向构造函数的prototype属性
     if (fn.prototype !== null) {
         obj.__proto__ = fn.prototype; // 
     }
 
+    // 这个是更符合语意的 创建一个新对象，并且这个新对象以传入的构造函数原型为原型
+    // 等同于👆两句
+    // fn.prototype 对象内天然拥有一个属性 constructure 指向 fn
+    var obj = Object.create(fn.prototype);
+
+
     // 执行函数并将this指向新对象
     var ret = fn.apply(obj, args);
 
     // 返回非空对象 或者 新对象
-    if (typeof ret === 'object' && typeof ret !== null) {
+    if (ret && (typeof ret === 'object' || typeof ret === 'function')) {
         return ret;
     }
 
@@ -44,6 +49,7 @@ var foo = myNew(A, 1, 2)
     + 字面量
     + Object.create()
       + `Object.create()`方法创建一个新对象，使用传入的参数对象作为生成的新对象的`__proto__`
+        + 当create接收`null`作为参数的时候，新对象是没有原型的
     + new Fn() 
     + class
 
@@ -52,7 +58,9 @@ var foo = myNew(A, 1, 2)
 
 
 function 函数声明 函数定义
-函数都有 `prototype` 属性， 属性值是对象，该对象天然有一个`constructor`属性, 指向函数本身；
+函数都有 `prototype` 属性，      
+属性值是对象，    
+该对象天然有一个`constructor`属性, 指向函数本身；
 函数本质上是对象，因此也会有所有对象都有的`__proto__`属性，指向`Function.prototype`; 因为函数声明/定义，本质上是用`Function`构造函数生成的
 
 
@@ -70,6 +78,11 @@ var p = { a: 1 };
 var obj = Object.create(p)
 
 obj.__proto__ === p
+
+const n = Object.create(null);
+n.__proto__ // undefined
+
+> 使用Object.create(null)创建的对象，是没有原型的
 
 
 
@@ -98,6 +111,12 @@ Foo.prototype.age = 18;
 var foo = new Foo('Jane');
 
 // foo.age = 18; 
+
+/**
+ * 这一步仅仅把Foo.prototype的指向变了，
+ * 原来的对象还在内存中，
+ * 已创建的实例原型还是指向原来的对象 引用不变
+ * */
 Foo.prototype = {
     gender: 'female',
 };
@@ -105,6 +124,7 @@ Foo.prototype = {
 foo.gender // undefined
 
 var foo2 = new Foo('Kate');
+foo2.gender // female
 
 ```
 
