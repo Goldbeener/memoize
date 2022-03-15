@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
-        "lib": ["es6"],
+        "lib": [
+            "es6"
+        ],
     }
 }

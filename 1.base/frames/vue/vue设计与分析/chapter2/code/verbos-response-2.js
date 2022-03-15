@@ -12,7 +12,7 @@ const data = {
 let activeEffect;
 
 // 副作用函数注册函数
-function effect(fn) {
+function useEffect(fn) {
     // 调用effect注册副作用函数时 将用户自定义的副作用函数赋fn值给activeEffect
     activeEffect = fn;
     // 执行
@@ -34,13 +34,13 @@ function track(target, key) {
         bucket.set(target, (depsMap = new Map()))
     }
 
-    let deps = depsMap.get(key);
+    let deps = depsMap.get(key); // 与对象属性key绑定的 做到了属性级别的隔离
     // 下一层是 key 与 effetFn的映射  没有的话 初始化
-    if(!deps) {
+    if (!deps) {
         depsMap.set(key, (deps = new Set()));
     }
     deps.add(activeEffect);
-}   
+}
 
 // 设置的时候 通知依赖更新
 function trigger(target, key) {
@@ -56,7 +56,7 @@ const target = new Proxy(data, {
     get(target, key) {
         track(target, key)
         return target[key];
-    }, 
+    },
     set(target, key, value) {
         target[key] = value;
         trigger(target, key)
@@ -65,7 +65,7 @@ const target = new Proxy(data, {
 });
 
 // 这是使用数据 类似 ref之类的?
-// effect(() => {
+// useEffect(() => {
 //     console.log(target.text);
 // })
 
@@ -73,7 +73,7 @@ const target = new Proxy(data, {
 //     target.text = 'hello v3'
 // }, 2000);
 
-effect(() => {
+useEffect(() => {
     console.log('>>>> effect run');
     console.log(target.text);
 })

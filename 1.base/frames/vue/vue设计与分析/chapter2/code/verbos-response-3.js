@@ -16,8 +16,8 @@ const data = {
 let activeEffect;
 
 // 副作用函数注册函数
-function effect(fn) {
-    
+function useEffect(fn) {
+
     const effectFn = () => {
         // 调用effect注册副作用函数时 将用户自定义的副作用函数赋fn值给activeEffect
         cleanUp(effectFn);
@@ -30,7 +30,10 @@ function effect(fn) {
 }
 
 function cleanUp(effectFn) {
-    for(let i = 0; i< effectFn.deps.length; i++) {
+    /**
+     * 一个effect 可能使用了多个数据；因此deps内就会有多个属性对应的set
+     */
+    for (let i = 0; i < effectFn.deps.length; i++) {
         const deps = effectFn.deps[i];
         deps.delete(effectFn)
     }
@@ -54,12 +57,12 @@ function track(target, key) {
 
     let deps = depsMap.get(key);
     // 下一层是 key 与 effetFn的映射  没有的话 初始化
-    if(!deps) {
+    if (!deps) {
         depsMap.set(key, (deps = new Set()));
     }
     deps.add(activeEffect);
     activeEffect.deps.push(deps);
-}   
+}
 
 // 设置的时候 通知依赖更新
 function trigger(target, key) {
@@ -68,6 +71,7 @@ function trigger(target, key) {
     if (!depsMap) return;
 
     const effectFns = depsMap.get(key);
+    // 这个地方做了一层转换 是为了避免在循环set的时候又添加新元素造成的无限循环 
     const effectToRun = new Set(effectFns);
     effectFns && effectToRun.forEach(fn => fn())
 }
@@ -76,7 +80,7 @@ const target = new Proxy(data, {
     get(target, key) {
         track(target, key)
         return target[key];
-    }, 
+    },
     set(target, key, value) {
         target[key] = value;
         trigger(target, key)
@@ -89,7 +93,7 @@ const target = new Proxy(data, {
  *      ok ---> effect
  *      text ---> effect
 */
-effect(() => {
+useEffect(() => {
     console.log(target.ok ? target.text : 'not');
 })
 

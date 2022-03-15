@@ -11,7 +11,7 @@ const data = {
 let activeEffect;
 
 // 副作用函数注册函数
-function effect(fn) {
+function useEffect(fn) {
     // 调用effect注册副作用函数时 将用户自定义的副作用函数赋fn值给activeEffect
     activeEffect = fn;
     // 执行
@@ -43,7 +43,7 @@ const target = new Proxy(data, {
 });
 
 // 这是使用数据 类似 ref之类的?
-// effect(() => {
+// useEffect(() => {
 //     console.log(target.text);
 // })
 
@@ -51,7 +51,7 @@ const target = new Proxy(data, {
 //     target.text = 'hello v3'
 // }, 2000);
 
-effect(() => {
+useEffect(() => {
     console.log('>>>> effect run');
     console.log(target.text);
 })
