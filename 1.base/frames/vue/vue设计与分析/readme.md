@@ -97,3 +97,13 @@
 ```
 v-directive:[argument] = value
 ```
+
+## 响应式数据
+### ref
+接收一个基本类型值，返回一个响应式且可变的ref对象 
+### reactive
+返回对象的响应式副本
+
+### TODO
+查看watch 不同类型的数据的使用方式     
+[deep-dive-into-watch](https://www.netlify.com/blog/2021/01/29/deep-dive-into-the-vue-composition-apis-watch-method/)
