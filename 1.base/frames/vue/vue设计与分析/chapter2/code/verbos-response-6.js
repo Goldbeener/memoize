@@ -14,6 +14,7 @@ const bucket = new WeakMap();
 const data = {
   foo: 1
 };
+
 let activeEffect;
 const effectStack = [];
 
@@ -57,7 +58,7 @@ function useEffect(fn, options) {
     activeEffect = effectStack[effectStack.length - 1]
   }
   effectFn.options = options; // 在此将副作用函数的执行的配置绑定 在trigger的时候使用
-  effectFn.deps = [];
+  effectFn.deps = []; // 维护effectFn与state的映射关系
   effectFn()
 }
 
@@ -107,6 +108,7 @@ function trigger(target, key) {
   // 
   const effectToRun = new Set();
   effectFns.forEach(fn => {
+    // 正在执行的是否是本身，是的话就不加
     if (fn !== activeEffect) {
       effectToRun.add(fn);
     }
