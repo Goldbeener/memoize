@@ -22,8 +22,27 @@ single concurrent
 
 在`本轮宏任务结束 + 微任务队列清空`之后, 可能会发生一波`render update`
 
+一个完整的event loop
+1. task
+2. micro-tasks
+3. 可能的ui-rending (是否能保证60Hz刷新频率)
+   1. requestAnimationFrame (是在浏览器下次重绘之前执行的)
+   2. rfa是最不能保证的，因为rendering行为是不确定的，不是一个loop必然伴随一个rendering
+   3. [requestAnimationFrame](2.browser/themes/RequestFn.md)
+
 浏览器render更新时机？
 以及其与宏任务的关系？
+
+**在一次tick所有微任务执行完成之后，会判断一下是否需要执行ui-render**     
+什么时候需要，什么时候不需要？     
+浏览器会判断在此时渲染，是否有收益，因为浏览器只要保证60Hz的频率就可以，如果even-loop的间隔小于16ms，那么及时渲染也不会应用，属于是无效的，
+
+所以并不是每次event-loop都会伴随着浏览器更新
+
+
+
++ [event-loop与浏览器渲染](https://github.com/aooy/blog/issues/5)
++ [event-loop](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop)
 
 `事件冒泡与下次宏任务执行顺序`
 手动点击click事件 与 脚本调用el.click()的区别？
