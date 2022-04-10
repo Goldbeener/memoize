@@ -1,0 +1,46 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <example :ok="ok"></example>
+  <button type="button" @click="ok = !ok">toggle Ok</button>
+</div>
+
+<!-- render Foo if ok is true else Bar -->
+
+<script>
+  // 渲染标签
+  const Foo = {
+    functional: true,
+    render(h, context) {
+      return h('a', 'foo');
+    },
+  };
+  const Bar = {
+    functional: true,
+    render(h) {
+      return h('a', 'bar');
+    }
+  };
+
+  // 1.base/frames/vue/mine-vue/3.render-fn/dynamic-render-components.html
+  new Vue({
+    el: '#app',
+    data: {
+      ok: true,
+    },
+    components: {
+      example: {
+        functional: true,
+        props: {
+          ok: {
+            type: Boolean,
+            default: true,
+          }
+        },
+        render(h, context) {
+          return context.props.ok ? h(Foo) : h(Bar);
+        }
+      }
+    },
+  });
+</script>

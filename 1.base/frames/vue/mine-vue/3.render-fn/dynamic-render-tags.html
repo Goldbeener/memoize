@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <example :tags="['h1', 'h2', 'h3']"></example>
+
+  <!-- <div>
+    <h1>0</h1>
+    <h2>1</h2>
+    <h3>2</h3>
+  </div> -->
+</div>
+
+<script>
+  // 渲染标签
+  Vue.component('example', {
+    props: {
+      tags: {
+        type: Array,
+        default: []
+      }
+    },
+    render(h) {
+      return h('div', this.tags.map((tag, i) => h(tag, i)));
+    }
+  });
+  // 1.base/frames/vue/mine-vue/3.render-fn/index.html
+  new Vue({
+    el: '#app'
+  });
+</script>

@@ -1,0 +1,66 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <smart-avatar :user-name="userName"></smart-avatar>
+</div>
+
+<!-- 高阶组件 -->
+<script>
+  function fetchUrl(name) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('https://avatars3.githubusercontent.com/u/6128107?v=4&s=200');
+      }, 500);
+    });
+
+  }
+  // 基础组件
+  const Avatar = {
+    functional: true,
+    render(h, context) {
+      return h('img', { attrs: { src: context.props.url } });
+    },
+  };
+
+  // 1.base/frames/vue/mine-vue/3.render-fn/higher-order-component.html
+  const cache = new Map();
+  function withUserName(comp) {
+    // 返回值是一个组件
+    return {
+      props: ['userName'],
+      data() {
+        return {
+          url: cache.get('userName') || 'xxx',
+        };
+      },
+      created() {
+        if (cache.has(this.userName)) {
+          return;
+        }
+        // 获取url
+        const userName = this.userName;
+        fetchUrl(userName).then(res => {
+          this.url = res;
+          cache.set(userName, res);
+        });
+      },
+      render(h, context) {
+        return h(comp, { props: { url: this.url } });
+      }
+    };
+  }
+
+  // 高阶组件 接收一个基础组件做参数 在高阶组件中抽象一些逻辑
+  const SmartAvatar = withUserName(Avatar);
+
+  // 1.base/frames/vue/mine-vue/3.render-fn/dynamic-render-components.html
+  new Vue({
+    el: '#app',
+    data: {
+      userName: 'evan'
+    },
+    components: {
+      SmartAvatar
+    },
+  });
+</script>

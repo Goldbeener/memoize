@@ -1,0 +1,39 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <counter></counter>
+  <counter></counter>
+  <counter></counter>
+  <button @click="inc">increment</button>
+</div>
+
+<script>
+  // 1.base/frames/vue/mine-vue/4.state-management/4.2.share-object.html
+  /**
+   * 状态管理 
+   * 共用对象
+   * 对象得是响应式的
+  */
+  const state = {
+    count: 0,
+  };
+
+  Vue.component('counter', {
+    data() {
+      // 这块将对象变成了响应式的 会收集依赖
+      return state;
+    },
+    render(h) {
+      return h('div', this.count);
+    },
+  });
+
+  new Vue({
+    el: '#app',
+    methods: {
+      inc() {
+        state.count++;
+      }
+    }
+  })
+</script>

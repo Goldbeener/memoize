@@ -1,0 +1,45 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  {{ foo }}
+  <button @click="foo++">foo++</button>
+</div>
+
+<script>
+  const MyPlugin = {
+    install(Vue, options) {
+      Vue.mixin({
+        created() {
+          const rules = this.$options.rules;
+          if (rules) {
+            Object.keys(rules).forEach(rule => {
+              this.$watch(rule, (val) => {
+                const { validate, message } = rules[rule];
+                if (!validate(val)) {
+                  console.log(message);
+                }
+              }, { immediate: true });
+            });
+          }
+        }
+      });
+    }
+  };
+
+  Vue.use(MyPlugin);
+
+  new Vue({
+    el: '#app',
+    data: {
+      messages: 'hello Vue',
+      foo: 0
+    },
+    // 添加一些自定义的选项 然后在插件内解析
+    rules: {
+      foo: {
+        validate: value => value % 2,
+        message: 'foo must be an odd'
+      }
+    }
+  });
+</script>

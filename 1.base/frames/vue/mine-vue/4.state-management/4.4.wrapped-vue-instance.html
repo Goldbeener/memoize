@@ -1,0 +1,59 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <counter></counter>
+  <counter></counter>
+  <counter></counter>
+  <button @click="inc">increment</button>
+</div>
+
+<script>
+  // 1.base/frames/vue/mine-vue/4.state-management/4.4.wrapped-vue-instance.html
+  /**
+   * 状态管理 
+   * vue 实例
+   * 将数据和对数据的处理封装在vue实例内
+   * 在外面直接使用该vue实例
+  */
+
+  function createStore({ state, mutations }) {
+    return new Vue({
+      data() {
+        return {
+          state
+        };
+      },
+      methods: {
+        commit(type) {
+          mutations[type](this.state);
+        }
+      }
+    });
+  }
+
+  const store = createStore({
+    state: {
+      count: 0
+    },
+    mutations: {
+      inc(state) {
+        state.count++;
+      }
+    }
+  });
+
+  Vue.component('counter', {
+    render(h) {
+      return h('div', store.state.count);
+    },
+  });
+
+  new Vue({
+    el: '#app',
+    methods: {
+      inc() {
+        store.commit('inc');
+      }
+    }
+  })
+</script>

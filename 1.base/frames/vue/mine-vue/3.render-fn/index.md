@@ -27,9 +27,24 @@ render function （jsx）
 + 不必实现的新的语法
 
 
+> render 
+> template
+> el
+> 三个属性
+
 
 ### 动态渲染标签
 ```html
+<!-- useage -->
+<example :tags="['h1', 'h2', 'h3']"></example>
+
+<!-- target -->
+<div>
+  <h1>0</h1>
+  <h2>1</h2>
+  <h3>2</h3>
+</div>
+
 <script>
 
   Vue.component('example', {
@@ -50,9 +65,11 @@ render function （jsx）
 
 ### 动态渲染组件
 ```html
+<!-- ok true => foo  false => bar -->
 <div id='app'>
   <example :ok="ok">
 </div>
+
 <script>
   const Foo = {
     functional: true,

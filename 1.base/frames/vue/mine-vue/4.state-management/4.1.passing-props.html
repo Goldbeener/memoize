@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<div id="app">
+  <counter :count="count"></counter>
+  <counter :count="count"></counter>
+  <counter :count="count"></counter>
+  <button @click="count++">increment</button>
+</div>
+
+<script>
+  // 1.base/frames/vue/mine-vue/4.state-management/4.1.passing-props.html
+  /**
+   * 状态管理 基础
+   * 多个组件通过共用父级的传递的props实现数据共享
+   * 数据定义、维护在父组件内
+  */
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        count: 0
+      };
+    },
+    components: {
+      counter: {
+        props: ['count'],
+        render(h) {
+          return h('div', this.count);
+        }
+      }
+    }
+  })
+</script>
