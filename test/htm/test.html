@@ -6,10 +6,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        .hash {
+            width: 100px;
+            height: 60px;
+            background-color: lightblue;
+            position: fixed;
+            left: 50px;
+            top: 40px;
+        }
+
+        .circle {
+            width: 200px;
+            height: 200px;
+            background-color: #f60;
+            border-radius: 50%;
+            position: fixed;
+            border: solid;
+            border-color: red;
+            border-width: 20px;
+            left: 0;
+            top: 0;
+            transform: translate(-20px, -50px);
+        }
+    </style>
 </head>
 
 <body>
     <h1>testststt</h1>
+    <div class="circle"></div>
+    <div class="hash"></div>
     <button type="button" id="btn">按钮</button>
     <script src="./js/request-queue.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -29,35 +61,35 @@
                 } else {
                     // 服务器处理了但是失败了
                 }
-            }
+            };
             xhr.onerror = function () {
-                console.log('网络错误或者是跨域被拦截')
-            }
+                console.log('网络错误或者是跨域被拦截');
+            };
 
             xhr.send(JSON.stringify({ foo: 'bar' }));
-        }
+        };
 
-        let progress = 0;
-        fetch('/')
-            .then(res => {
-                const contentLength = res.headers.get('Content-Length');
-                const pump = function (reader) {
-                    return reader.read().then(result => {
-                        if (result.done) {
-                            return
-                        }
-                        const chunk = result.value;
+        // let progress = 0;
+        // fetch('/')
+        //     .then(res => {
+        //         const contentLength = res.headers.get('Content-Length');
+        //         const pump = function (reader) {
+        //             return reader.read().then(result => {
+        //                 if (result.done) {
+        //                     return
+        //                 }
+        //                 const chunk = result.value;
 
-                        progress += chunk.byteLength;
-                        console.log((progress / contentLength * 100).toFixed(2) + '%');
+        //                 progress += chunk.byteLength;
+        //                 console.log((progress / contentLength * 100).toFixed(2) + '%');
 
-                        return pump(reader)
-                    })
-                }
-                return pump(res.body.getReader())
-            }).catch(e => {
-                console.log('🚀🚀🚀 ~ e', e);
-            })
+        //                 return pump(reader)
+        //             })
+        //         }
+        //         return pump(res.body.getReader())
+        //     }).catch(e => {
+        //         console.log('🚀🚀🚀 ~ e', e);
+        //     })
     </script>
 </body>
 

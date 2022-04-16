@@ -1,0 +1,7 @@
+{
+  "markdown.preview.breaks": true,
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+}
