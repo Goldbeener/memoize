@@ -1,12 +1,15 @@
-# Worker 
+# Worker
+
 worker 是运行在独立于js引擎主线程之外的一个线程。
 
 当前存在的worker
+
 1. `web worker`
 2. `service worker`
 3. `worklets`
 
 ## Web Workers
+
 创建**操作系统级别的线程**，与浏览器主线程并行
 
 多线程执行js代码
@@ -18,14 +21,15 @@ worker 是运行在独立于js引擎主线程之外的一个线程。
 没有一个特别的使用场景
 
 ### 限制
+
 为了避免与主线程的并发冲突，有以下限制
+
 1. 无法访问DOM、BOM、local File； 可以访问Location、navigator
 2. 主线程与worker的数据交互，是`值复制`的形式; worker对值得修改不会影响主线程；但是过多的数据声明可能会影响性能，可以通过`transferable object`解决
 3. 限制，最多20个，每个最大内存5M; 需要手动维护创建和销毁
 
-
-
 ## Service Worker
+
 是worker的一种
    意味着运行在一个独立的线程
 
@@ -40,6 +44,7 @@ worker 是运行在独立于js引擎主线程之外的一个线程。
     3. 访问后台同步API
 
 **限制**
+
 1. 运行在独立的线程内，因此不能访问DOM
 2. 也不会阻塞js主线程执行
 3. 完全异步，同步API(xhr、localStorage)不能使用
@@ -47,11 +52,12 @@ worker 是运行在独立于js引擎主线程之外的一个线程。
 4. 只能工作在https模式下
 
 ### Cache
+
 Cache 对象，在service worker下常用
 用来存储请求和响应信息
 
-
 ## Worklets
+
 提供了介入浏览器渲染流水线不同阶段的钩子，使开发者能对浏览器渲染过程做一些轻微的定制
 应用在高性能图形渲染或音频处理场景
 
@@ -59,7 +65,6 @@ Cache 对象，在service worker下常用
 + Paint worklets
 + Animation worklets
 
-
-
 ## references
+
 + [3 kinds workers](https://bitsofco.de/web-workers-vs-service-workers-vs-worklets/)

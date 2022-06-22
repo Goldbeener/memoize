@@ -1,4 +1,5 @@
 # requestIdleCallback
+
 应用代码期望尽快执行，
 用户交互期望及时响应
 
@@ -12,8 +13,8 @@
 
 解决方案： `requestIdleCallback`
 
-
 ## shim
+
 ```js
 window.requestIdleCallback =
   window.requestIdleCallback ||
@@ -37,6 +38,7 @@ window.cancelIdleCallback =
 ```
 
 ## usage
+
 ```js
 requestIdleCallback(myNonEssentialWork, { timeout: 2000 })
 
@@ -55,15 +57,18 @@ function myNonEssentialWork(deadline: {
 }
 
 ```
+
 设置截至时间，会在到期时，强制执行cb
 并且cb的参数： timeRemaining函数返回0； didTimeout: true
 
 ## 应用场景
 
 # requestAnimationFrame
+
 ## 是什么
-常规的动画效果，需要使用定时器函数，setInterval；    
-并且为了流畅的动画效果，一般要保证动画更新的频率是60fps    
+
+常规的动画效果，需要使用定时器函数，setInterval；
+并且为了流畅的动画效果，一般要保证动画更新的频率是60fps
 因此一般的做法是
 
 ```js
@@ -73,9 +78,9 @@ setInterval(() => {
 
 // 或者递归调用setTimeout
 ```
+
 1. 不能准确的在设定的时间点执行，实际运行依赖用户的浏览器实际情况
 2. layout thrashing; 定时器函数会按照设定，重复的执行，即使在不必要的场景下，比如非激活页面等，会引起不必要的重绘重拍，耗费性能，在移动端上更甚。
-
 
 现在：
 浏览器原生提供的处理`js animation`的api
@@ -100,10 +105,12 @@ requestAnimationFrame(handlerRepeat);
 > 因此谨慎使用，不要把一些不重要、不需要实时的操作放在这里
 
 ### 优点
+
 1. 浏览器内部优化，合并操作，更加高效、流畅
 2. 隐藏的浏览器tab内不会被执行，节省cpu、gpu，提高电池寿命
 
 ## polyfill
+
 ```js
 let lastTime = 0;
 
@@ -123,6 +130,7 @@ window.requestAnimationFrame = function(callback) {
 ## 应用场景
 
 ### 在指定时间做定量改变
+
 ```js
 const el = document.querySelector('div');
 const duration = 5000; // 指定500ms
@@ -149,6 +157,7 @@ requestAnimationFrame((current) => {
 ```
 
 ### 降低执行频率
+
 正常的`requestAnimationFrame`执行频率大约是每秒60次，即每16.7ms一次， 与大多数浏览器的刷新频率一致。 并且`cancelAnimationFrame`也不支持参数设置执行频率
 
 有些动画需要指定频率时，只能通过手动调整
@@ -170,9 +179,8 @@ requestAnimation(throttleRepeat); // 这样就会每隔50ms执行一次
 clearTimeout(timer);
 ```
 
-
-
 ### 实现一个setInterval
+
 ```js
   let id = null; // TODO id怎么合适的return出去
 
@@ -211,23 +219,22 @@ clearTimeout(timer);
 ```
 
 ### 收集页面fps
+
 ```js
 
 ```
 
-
-
 # setImmediate
-每一帧都执行
 
+每一帧都执行
 
 # shim VS polyfill
 
 # FPS
+
 Frames Per Second 每秒可以重新绘制的帧数
 
-
-
 # 参考文档
+
 + [Understanding JavaScript's requestAnimationFrame](http://www.javascriptkit.com/javatutors/requestanimationframe.shtml)
-+ [Using requestIdleCallback ](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)
++ [Using requestIdleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback)

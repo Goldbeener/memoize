@@ -1,4 +1,5 @@
-## 获取当前页面已使用的localStorage内存量
+# 获取当前页面已使用的localStorage内存量
+
 1. localStorage内都是以utf-16 string的形式存储的
 2. key\value都要计算
 3. localStorage api
@@ -27,6 +28,7 @@ function getUsedMemorySize() {
 ```
 
 ## 获取当前站点最大localStorage容量
+
 ```js
 if (localStorage && !localStorage.getItem('size')) {
     var i = 0;
@@ -42,12 +44,10 @@ if (localStorage && !localStorage.getItem('size')) {
 }
 ```
 
-
 ## 不同类型数据在内存中占用存储空间
 
-```
+```bash
 boolean: 4 bytes;
 string: (length * 2) bytes;  utf-16 string
 number: 8 bytes;
-
 ```

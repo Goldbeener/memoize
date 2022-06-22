@@ -1,12 +1,13 @@
 # 浏览器本地存储
+
 + cookie
 + localStorage
 + sessionStorage
 + indexDB
 + webSQL
 
-
 ## web app 内存探测
+
 ```js
 navigator.storage.estimate().then((res) => {
     const { usage, quota } = res;
