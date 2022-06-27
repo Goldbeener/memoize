@@ -1,7 +1,9 @@
 1. CSS实现几个div一行排列。
+
 + float: left
 + display: flex
-+ display: grid 
++ display: grid
+
 2. 两个div都设置float那么其父元素会怎样？为什么清除浮动可以解决这个问题？
    1. 子元素脱离文档流，父元素没有子元素被撑开
    2. 清除浮动创建了一个新的BFC盒子，BFC盒子有一个规则就是，会包裹住内部的浮动元素
@@ -11,7 +13,7 @@
    1. 绑定this 是当前的词法作用域内的this
    2. call、apply无效
    3. 不能作为构造函数
-      1. 为什么？ 
+      1. 为什么？
       2. 构造函数new的过程，需要使用到this，并且this还是动态的，而箭头函数的this是绑定的，不会变的
    4. 没有arguments
    5. 没有prototype属性
@@ -34,7 +36,7 @@
 4. null怎么判断
    1. === null
    2. Object.prototype.toString.call(null) === '[object Null]'
-   3. 
+   3.
 5. 闭包是什么
 6. prefetch和preload的区别
    1. preload 告诉浏览器尽快下载并缓存指定的资源（js/css）
@@ -45,21 +47,23 @@
       2. 用在加速非首屏资源的加载
 7. es6特性
 8. css垂直水平居中
-9.  输入网址后，浏览器都做了什么
+9. 输入网址后，浏览器都做了什么
 10. 引入cdn字体，会发生什么问题
 11. 遍历对象key
 12. 移动端页面怎么适配
 13. transtion,animation
 
 ## 网络
+
 13. 强缓存，协商缓存
 14. https
 15. webpack的一些问题
 
 ## Vue
+
 1. vue双向绑定原理
    1. 数据流向 问题  上层数据变更下层更新，下层数据变更上层也更新
-   2. v-model 
+   2. v-model
       1. 语法糖
       2. 拆分为一个prop 和 一个绑定事件
          1. 默认是value-imput组合
@@ -68,7 +72,7 @@
    1. 原理 event-loop 下一个tick执行
    2. 实现
       1. callbacks 队列维护所有的cb
-      2. timeFunc 
+      2. timeFunc
       3. flushCallbacks
          1. 循环清空callback队列中的任务
 3. Vue响应式原理
@@ -84,7 +88,7 @@
 7. 在div上既设置display:none，也设置v-show="true"，结果会怎样？
     div 会被隐藏
 8. keep-alive是用来干嘛的？
-9.  mixins用法
+9. mixins用法
 10. vue双向绑定中，收集数据变化的依赖是什么时候收集的？？
 11. vue生命周期渲染（父子渲染顺序）
     1. 父beforeCreate
@@ -97,7 +101,6 @@
     4. 父mounted
 
     更新顺序
-
 
 ## code
 
@@ -191,14 +194,15 @@ log(6);
 ```
 
 二面：
+
 1. 项目上负责的比较有难点的部分？
 2. webpack分包问题
 3. http缓存
 4. css定位
 5. websocket
 
-
 二面;
+
 1. this有几种情况
 2. bind执行的返回值是什么
 3. 任何函数执行都有返回值，那么函数执行的返回值是什么
@@ -230,8 +234,7 @@ const day='21';
 const str = `${year}-${month}-${day}`;
 console.log(str) 输出：2017-09-21
 2.求二叉树是否存在和值为N的路径。从二叉树的根，到叶子节点称为一条路径，路径上的每个节点的value之和为路径和值，本题要求所有的路径中是否存在一条和值为N的？
-3.封装一个 JS 的 HTTP 请求库。 
-
+3.封装一个 JS 的 HTTP 请求库。
 
 一面
 // 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。lengthOfLongestSubstring('babcaacbd') = 4
@@ -244,7 +247,6 @@ console.log(str) 输出：2017-09-21
 React组件中需要引入react但是没用到是为什么？
 react组件列表渲染要加key是为什么？
 
-
 题1 实现vue 的lazyImage组件
 题2 给定数组，求最长的连续数字长度，不要求顺序，如[400, 4, 100, 1, 3, 2]最长一串为1 2 3 4，所以答案为4
 了解过defineProperty吗？
@@ -255,7 +257,7 @@ redis的基础数据结构
 一面：
 1.vue2和vue3的区别？（从使用方面作答）
 2.介绍一下使用webpack搭建项目？我把整个配置过程了介绍一下，以及为什么这么配置。
-3.webpack的chunk split？es6import和require这些语法是怎么让浏览器识别的。
+3.webpack的chunk split？es6 import和require这些语法是怎么让浏览器识别的。
 4.使用typescript的目的是什么？帮助解决了什么问题？
 5.跨域请求都有哪些解决方案？cors的原理？请求头，响应头
 6.手写代码实现用一个div实现进度条的功能？
@@ -266,6 +268,7 @@ redis的基础数据结构
 less优点，react优缺点，react高阶组件，xss、csrf原理和防御方式，webpack优化，websocket和http鉴权的区别，h5与原生通信，实现一个div的抽屉效果（点击隐藏，动画），实现lodash.get方法--get(obj,path)
 
 面试题一：
+
 1. 基于我简历里头做的项目问了一些问题
 2. 判断执行顺序
 new Promise(resolve => {
@@ -276,17 +279,18 @@ new Promise(resolve => {
    console.log(num)
 });
 console.log(4)
+
 3.
-class Scheduler { 
-    add(promiseCreator) { ... } 
+class Scheduler {
+    add(promiseCreator) { ... }
     // ...
-} 
+}
 const timeout = (time) => new Promise(resolve => {  setTimeout(resolve, time) })
 const scheduler = new Scheduler()
-const addTask = (time, order) => { 
-   scheduler.add(() => timeout(time))   
+const addTask = (time, order) => {
+   scheduler.add(() => timeout(time))
     .then(() => console.log(order))
-} 
+}
 addTask(1000, '1')
 addTask(500, '2')
 addTask(300, '3')
@@ -323,7 +327,6 @@ test.bind({ name: 'test' })()
 5. 做了H5离线化，做完之后的性能指标提升多少?自己有没有在看这些指标?
 6. unicode和utf-8和ASCII有啥不同?
 
-
 1系统设计：设计一个新闻网站
 2编程题：实现一个网页图片自动轮播功能，并且有pre和next的按钮功能
 
@@ -333,7 +336,6 @@ flex-shrink
 flex-basis
 
 盒模型
-
 
 ```
 setTimeout(()=>{
@@ -353,8 +355,6 @@ setTimeout(()=>{
 
 ```
 
-
-
 ````````
 const obj = {
         fn: () => {
@@ -372,9 +372,7 @@ function fn() {
 fn.call({b:1})
 ````````````
 
-
-
-##### 请实现方法`curry(Function) => Function`，传入一个多参函数，返回单参函数
+#####  请实现方法`curry(Function) => Function`，传入一个多参函数，返回单参函数
 example:
 
 ```
@@ -438,7 +436,6 @@ iframe缺陷问题
 错误收集
 其他的就是说项目
 
-
 一面：
 防抖或节流
 vue响应式原理
@@ -482,6 +479,7 @@ xss攻击和csrf攻击
 票求最大收益问题；
 深度复制简单对象以及深度遍历二叉数；
 出了个算法：股票问题，股票数组，第几天能卖出一次，收获最大；
+
 1. 原型链
 2. cdn缓存，跨域（怎么配置）
 3. 本地缓存
@@ -544,7 +542,6 @@ css BFC
 8、聊聊RN、跨端
 9、是否有带团队经验
 
-
 一面：
 现场写代码。
 React
@@ -569,7 +566,6 @@ Promise.resolve().then(() => {
     console.log(300)
 })
 // 200,300,100
-
 
 1、服务端鉴权怎么做的
 2、cookie 和 session
@@ -608,6 +604,5 @@ symbol的作用和使用场景？
 6、TCP三次握手，四次挥手，如果两台设备正在连接通信中，其他一台重启，另一台是怎么处理的？
 7、树的遍历，深度广度优先算法
 8、[1，[2,3,[4,5]]，多维数组变成一维数组
-
 
 性能优化、网络安全、还有底层的东西多、第三方框架的原理之类的

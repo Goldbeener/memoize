@@ -3,11 +3,11 @@
 ## 状态共享
 
 ### provide/inject
+
 具有嵌套关系的父子组件，长距离传递props
 
 + 父组件不需要知道哪些子组件使用了它provide的property
 + 子组件不需要知道inject的property来自哪里
-
 
 + 传递静态数据
 + 传递实例property
@@ -16,6 +16,7 @@
 + 传递readonly数据
 
 ### 组合式函数数据
+
 ```js
 // useHandlexxx.js
 

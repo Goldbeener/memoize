@@ -10,9 +10,9 @@ console.log('a 模块自己的执行');
 // console.log('>>> a执行', foo); // bar
 
 
-// setTimeout(() => {
-//     console.log('>>>', foo) // baz
-// }, 500);
+setTimeout(() => {
+    console.log('>>>a模块的异步行为', foo) // baz
+}, 500);
 
 // export function foo() {
 //     bar();

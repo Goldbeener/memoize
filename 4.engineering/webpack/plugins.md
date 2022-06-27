@@ -5,8 +5,8 @@
 
 **在webpack4.0内， 一切都是插件**
 
-
 ## 定义
+
 plugin本质是一个有apply方法的类
 
 ```js
@@ -39,9 +39,10 @@ beforResolve(resolveData, callback) {
 }
 ```
 
-
 # tapable
+
 webpack实现的一个工具库，webpack内的许多概念都是tapable的示例
+
 1. compiler 顶层 中央调度 是涵盖webpack工作整个生命周期 编译器
    1. 必须通过compiler来访问其他实例
    2. 接受options，创建compilation
@@ -51,7 +52,7 @@ webpack实现的一个工具库，webpack内的许多概念都是tapable的示�
    3. 依赖图谱绘制、遍历算法、打包、渲染、树摇
       1. 一次编译的整个过程都包含于compilation
       2. 可以根据compilation暴露的钩子，在合适的阶段介入其中，干预编译结果
-3. resolver 
+3. resolver
    1. webpack实现的模块路径解析
       1. enhanced-resolve 独立的库，可以使用在webpack之外
    2. 根据路径得到对应的模块的详细信息，路径可以是不同的格式，相对路径、绝对路径、带别名等
@@ -71,8 +72,6 @@ webpack实现的一个工具库，webpack内的许多概念都是tapable的示�
    1. chunk、module、dependency 不同层级的实体都有template
    2. 每个层级的实体都被IIFE包裹，然后生成最终的打包产物
 
-
-
 入口模块，带有依赖
 放在chunk内，添加各种插件
   添加追踪信息
@@ -81,8 +80,8 @@ webpack实现的一个工具库，webpack内的许多概念都是tapable的示�
 处理依赖导入语句，因为import或者require语句在浏览器中不生效
 渲染
 
-
 webpack的三个核心步骤
+
 1. 构建依赖图谱
 2. 优化图谱
 3. 渲染
@@ -91,7 +90,5 @@ webpack在幕后做了什么工作
 解析文件，将所有文件绑定在一个单独的依赖关系图中
 
 插件系统，tapable + hook  暴露了这个过程的关键节点，可以在其中任意插入处理程序，做功能拓展
-
-
 
 如何在vscode中debugger

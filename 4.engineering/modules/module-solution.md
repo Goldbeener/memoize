@@ -1,9 +1,10 @@
+# 模块化解决方案
+
 模块化解决方案：
     + AMD: `RequiereJS`
     + CommonJS: `node.js`  `Browserify`
     + UMD: AMD + CommonJS + browser/global全局
-    + ES Module es6 模块规范
-
+    + ES Module es6 模块规范 import/export
 
 ## CommonJS 模块规范
 
@@ -21,6 +22,7 @@
 [demo](../../test/require/main.js);
 
 ## ES Modules
+
 [es module](esm.md)
 
 静态导入文件，在编译阶段确定依赖关系
@@ -34,6 +36,7 @@
 不能写在if条件中，只能在文件顶部
 
 ### import steps
+
 1. Parsing: 编译阶段，静态分析代码中的语法错误，比如模块导入中使用了运算等非法操作
 2. Loading: 递归的加载依赖模块，a->b->c....
 3. Linking: 将每个模块的导出声明 绑定到一个scope内；
@@ -41,8 +44,8 @@
 5. 真正在引用的时候，import语句其实什么都没做，前置工作已经把导入完成了，后面就是主模块的代码执行
    1. 主模块在依赖导入完成之前，什么都不会做，不会执行代码 [依赖模块内有异步行为的话，会仅触发，不会等待完整的异步回调]
 
+import/export
 
-import/export 
 1. import、export 必须在文件顶层，不能写在条件语句中或者函数内
    1. 即使import语句不是写在模块的最前方，也是会被提升的，在他之前的代码不会执行，直到import引入的模块执行完毕
 2. 所有依赖的模块，都必须预先加载、解析、链接，在主模块执行之前
@@ -50,8 +53,5 @@ import/export
    2. 也没有模块加载的控制权
 3. 即使引入了某个模块，但是并没有使用引入的值，但是引入的模块其实也被执行了
 
-
 webpack的代码分割，是对静态模块的补充，可以实现类似对模块的加载控制，
 对模块懒加载、按需加载
-
-

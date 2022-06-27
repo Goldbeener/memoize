@@ -15,8 +15,8 @@ Composition API
 > 在composition API中，数据的响应式不再绑定vue组件；可以在纯函数中实现
 > 使得复用更加方便 简单
 
-
 ## Renderless components
+
 组件只有逻辑代码，没有dom相关的代码
 依赖于slot 和 slot-scope
 组件使用者注入dom代码

@@ -19,8 +19,24 @@ Runtime + Compiler: 使用了template属性传入字符串或者sfc，没有对�
 Vue最终的产物是一个`Vue类`
 这个类有:
 
-+ 类属性: 全局配置config Vue.config.silent
++ 类属性: 全局配置config
+  + Vue.config
+    + silent
+    + optionMergeStrategy
+    + errorHandler
 + 类方法: 全局API Vue.extend() Vue.nextTick()
+  + Vue.extend()
+  + Vue.nextTick()
+  + Vue.set()
+  + Vue.delete()
+  + Vue.directive()
+  + Vue.filter()
+  + Vue.component()
+  + Vue.use()
+  + Vue.mixin()
+  + Vue.compile()
+  + Vue.observable()
+  +
 + 选项: 实例化的时候接收的参数
   + 数据
     + data
@@ -48,10 +64,36 @@ Vue最终的产物是一个`Vue类`
     + name
     + model
     + functional
-+ 实例属性
++ 实例属性 this.$refs this.$parent
+  + $data
+  + $props
+  + $el
+  + $refs
+  + $parent
+  + $children
+  + $options 获取自定义property
+  + $slots
++ 实例数据
+  + $watch 观察实例上的一个表达式或者函数计算的结果的变化
+  + $set
+  + $delete
 + 实例方法
+  + $on
+  + $off
+  + $once
+  + $emit
++ 实例生命周期
+  + $mount
+  + $forcUpdate
+  + $nextTick
+  + $destroy
+
+> 实例上的属性、方法都是用 this.xxx 访问
 
 ## 入口
+
+**Vue的本质就是一个构造函数+原型实现的类；**
+**在Vue类本身和原型prototype上添加了一系列属性和方法**
 
 vue-runtime-compiler --> 主要是对$mount函数处理，处理了template、el、render函数三种形式的统一
 vue.runtime.js -->  配置相关
@@ -95,7 +137,7 @@ new Vue()
                       1. 2次调用时机
                          1. 组件首次渲染
                          2. 数据更新时候
-                      2. vm.__patch__
+                      2. vm.**patch**
                          1. patch
                             1. createPatchFunction  针对web和weex2个平台
                                1. 本质工作是根据对比VNode找出需要更新的部分，再映射到真实的DOM中
@@ -315,8 +357,8 @@ Virtual DOM最大的意义是`避免了不必要的、中间态DOM操作`
 
 ## 数据驱动
 
-视图是由数据驱动生成的
-通过修改数据来更新视图
+**视图是由数据驱动生成的**
+**通过修改数据来更新视图**
 
 模板和数据 最终怎么渲染成DOM？
 

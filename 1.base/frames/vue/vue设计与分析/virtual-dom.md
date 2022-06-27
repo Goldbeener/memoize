@@ -1,17 +1,19 @@
-# Virtual DOM 
+# Virtual DOM
+
 一种编程理念：`UI以数据的形式，存储在内存中`
 
 常见的形式是，一个自定义的对象用来描述真实dom结构，里面包含了dom结构渲染需要的所有信息。
 
-> 可以用在声明式ui编程 
+> 可以用在声明式ui编程
 > 也可以用在跨平台的编程方案上，一次编写多平台渲染，渲染层根据虚拟dom，用不同平台的渲染api，渲染出不同的产物
 
-virtual DOM不是一个功能，是一种`解决方案`(means to an end)。     
+virtual DOM不是一个功能，是一种`解决方案`(means to an end)。
 是`声明式编程`、`数据驱动开发方式`、`跨平台渲染`的一个解决方案。
 
-
 可以专注构建应用功能，同时保证性能下限。
+
 ## 优势在哪？
+
 **前端操作DOM耗费性能？**
 
 1. DOM引擎 和 js引擎 共同工作在同一线程： 主线程；任何dom操作的api调用，需要先将js数据结构转换成DOM数据结构，再挂起js引擎并启动DOM引擎；执行过后将返回值格式化为js引擎，重启js引擎继续执行。 这种上下文切换很耗费性能
@@ -25,22 +27,21 @@ virtual DOM不是一个功能，是一种`解决方案`(means to an end)。
 然后再与真实dom做diff操作，`只渲染变动的最小部分`。
 这样忽略了中间过程，减少了js引擎与dom引擎的切换，并且最小化了dom操作。
 
-
 1. 使用虚拟dom可以减少不必要的中间渲染状态；并且通过diff最小化渲染任务；
 2. 可以方便实现跨平台
 
 以上是虚拟dom的优势
 
 ## 问题点？
+
 虚拟dom 什么时候转换成 真实dom？ nextTick？
 
 ## 跨平台渲染
+
 RN、Weex 就借助了虚拟DOM的跨平台能力
 
 将应用嵌入在JS引擎中，然后在交互过程中，用虚拟dom做diff，
 将最终的DOM结构信息传递给不同的平台，使用平台的原生能力进行渲染
-
-
 
 **一个tick具体是什么时机？**
 本次loop中，主线程上任务执行完成，
@@ -53,30 +54,32 @@ process.nextTick() Vs setImmediate()
 nextTick 是微任务，在本轮loop时触发；
 setImmediate是宏任务，在接下来的loop内触发。
 
-
 ## virtual DOM带来的问题
-diff 过程是必须的；    
-这个diff过程是在运行时进行的；     
-并且框架可能会触发很多不必要的diff；   
+
+diff 过程是必须的；
+这个diff过程是在运行时进行的；
+并且框架可能会触发很多不必要的diff；
 
 这些是耗费性能的，可以避免的；
 
 > svelet实现了不借助virtual DOM的声明式编程
 
 # web components
+
 旨在解决web应用中的代码复用问题
 
 包含三项主要技术
-1. Custom elements 
-   1. jsAPI 
+
+1. Custom elements
+   1. jsAPI
    2. 允许自定义标签元素及其行为
    3. 其实就是自定义组件
-2. Shadow DOM 
-   1. js API 
-   2. 将封装的影子dom附加到元素并控制其关联功能 
+2. Shadow DOM
+   1. js API
+   2. 将封装的影子dom附加到元素并控制其关联功能
    3. 影子元素与主文档分开呈现
       1. 自定义组件内部的结构、样式、逻辑是封装在一起的，不会与外币相互干扰
-      2. shadow root 自定义组件内创建的根节点， shadow tree 影子dom内部的dom树； 
+      2. shadow root 自定义组件内创建的根节点， shadow tree 影子dom内部的dom树；
       3. shadow host影子dom挂载的地方，一般是自定义组件；shadow boundary 影子dom结束的地方，也就是常规dom开始的地方
    4. 可以实现 保持元素的私有功能，不会与其他冲突
 3. HTML templates
@@ -85,4 +88,3 @@ diff 过程是必须的；
    3. 不直接渲染在页面，但是可以在自定义元素中复用
 
 使用custome elements创建自定义组件，使用shadow dom实现自定义组件的私有化；templates实现html结构的复用。
-
