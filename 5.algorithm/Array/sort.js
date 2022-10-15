@@ -26,7 +26,7 @@ function selectSort(arr) {
 */
 
 // version 1
-function qucikSort(arr) {
+function quickSort(arr) {
 
     if(arr.length <= 1) return arr; 
 
@@ -43,7 +43,7 @@ function qucikSort(arr) {
         }
     }
 
-    return [...qucikSort(left), mid, ...qucikSort(right)];
+    return [...quickSort(left), mid, ...quickSort(right)];
 
 }
 
@@ -56,6 +56,16 @@ function qucikSort(arr) {
  * 
 */
 
+
+/***
+ * 快速排序的核心思想： 分治
+ * 通过一趟排序，找到一个基数，将要排序的数据分成独立的2部分
+ *  其中一部分都比基数小
+ *  另一部分都比基数大
+ * 
+ * 然后再分别针对这两部分数据做递归快排
+*/
+
 function swap(arr, i, j) {
     if ( i === j) return;
     let _ = arr[i];
@@ -64,8 +74,10 @@ function swap(arr, i, j) {
 }
 //这一步找到 数组最后一项x在数组中的确定位置 并且把数组分成左右2部分
 function divide(arr, s, e) {
-    const x = arr[e - 1];
+    const x = arr[e - 1]; // 数组最后一项做基数
     let i = s - 1;
+
+    // i代表比基数小的值的最大的索引
 
     for (let j = s; j < e - 1; j++) {
         if(arr[j] < x) {
@@ -73,6 +85,7 @@ function divide(arr, s, e) {
             swap(arr, i, j);
         }
     }
+    // i+1 就是基数在排序完的数组中的位置
     swap(arr, i + 1, e - 1)
     return i + 1;
 }
@@ -82,7 +95,7 @@ function divide(arr, s, e) {
  * @param end 结束序号
 */
 function qsr(arr, start = 0, end = arr.length) {
-    if (start < end -1) {
+    if (start < end - 1) {
         const q = divide(arr, start, end);
         qsr(arr, start, q);
         qsr(arr, q + 1, end);
@@ -90,6 +103,7 @@ function qsr(arr, start = 0, end = arr.length) {
     return arr
 }
 
+console.log('>>>>', qsr(arr));
 
 /**
  * 快速选择排序

@@ -1,14 +1,14 @@
-+ https://github.com/zizzamia/perfume.js
-+ https://github.com/GoogleChrome/web-vitals
-+ https://chrome.google.com/webstore/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma
-+ https://github.com/jpillora/xhook
-
-
-
++ <https://github.com/zizzamia/perfume.js>
++ <https://github.com/GoogleChrome/web-vitals>
++ <https://chrome.google.com/webstore/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma>
++ <https://github.com/jpillora/xhook>
 
 ## 性能指标
+
 ### Navigation Timing
+
 收集网络请求的生命周期和计时的性能指标
+
 + DNS lookup
 + Header Size
 + Fetch time 缓存查找响应时间
@@ -17,14 +17,14 @@
 + Download time 仅下载响应时间
 + TTFB Time To First Byte 请求发出后到接受响应首字节所需时间， web页面加载耗时的最大影响因素，占页面总延迟的40%-60%
 
-
 ## Performance Metrics
 
-
-
 ## tools
+
 ### performanc monitor
+
 可以监控指标：
+
 + CPU usage
 + JS Heap Size
 + DOM Nodes
@@ -34,8 +34,8 @@
 + Layouts/sec
 + Style Recalcs /sec
 
-
 #### animation
+
 + Css 动画
   + 全部过程在合成线程，效率高
 + Js 动画
@@ -45,26 +45,24 @@
 60+FPS 是比较好的
 
 #### FPS的计算与统计
+
 1. chrome浏览器查看
   chrome devtools --> more tools --> Rendering ---> Frame Rendering Stats
 2. Frame Timing API
   
-
-
 #### DOM Nodes
-> The DOM node count graph shows the number of created DOM nodes that are still held in memory, i.e. which have not been garbage collected yet. This doesn't have to coincide with the elements you get through getElementsByTagName. The latter will also only get you the elements actually attached to the document tree. It won't get any 'offline' items to which you still have references.
 
+> The DOM node count graph shows the number of created DOM nodes that are still held in memory, i.e. which have not been garbage collected yet. This doesn't have to coincide with the elements you get through getElementsByTagName. The latter will also only get you the elements actually attached to the document tree. It won't get any 'offline' items to which you still have references.
 
 #### JS Event Listener
 
 What are these so called Listeners to begin with?
 
 + These are event listeners.
-+ 选中一个元素，查看`Event Listeners`tab, 
++ 选中一个元素，查看`Event Listeners`tab,
 + 选中 `Ancestors`checkbox; 可以看到页面所有绑定事件
 
 页面操作引起 JS Event Listener 数量显著增加问题？
-
 
 ## 页面性能埋点监控
 
@@ -74,7 +72,7 @@ What are these so called Listeners to begin with?
   + Total Blocking Time(TBT) FCP到TTI之间`所有长任务的阻塞时间之和`
   + Cumulative Layour Shift(CLS)
 + Other Web Vitals
-  + Time To First Byte(TTFB) 
+  + Time To First Byte(TTFB)
   + DomContentLoaded(DCL)
   + First Paint(FP)
   + First Contentful Paint(FCP)
@@ -94,50 +92,55 @@ What are these so called Listeners to begin with?
 
 > 长任务
 > 一个任务在主线程上运行超过50ms，就是长任务
-> 长任务阻塞时间： 任务总执行时间 - 50ms 
+> 长任务阻塞时间： 任务总执行时间 - 50ms
+
 #### TBT 改善点
+
 1. 对代码分割，延迟加载对首屏加载不重要的包
 2. 将代码分解成 工作更少、执行更快的函数  最小职能
 3. 减少DOM查询
 4. 将计算密集型任务交给Service Worker 或 Web Workers
 
 #### TBT与TTI的区别
+
 完全可交互： 页面主线程至少5s内都没有长任务，那么可以认为它是完全可交互的
 
 TBT只在FCP和TTI之间计算
 TTI识别主线程何时变为空闲时间
 TBT量化主线程在空闲之间的繁忙程度
 
-
 ### 相关技术点
+
 1. performance
 2. sendBeacon
 3. xhook
 4. requestAnimationFrame
 
-
-
 ### 参考文章
-- [ ] [Optimize website speed 加载优化](https://developer.chrome.com/docs/devtools/speed/get-started/)
-- [ ] [Analyze runtime performance](https://developer.chrome.com/docs/devtools/evaluate-performance/)
-- [ ] [Fix memory problems](https://developer.chrome.com/docs/devtools/memory-problems/)
 
+- [ ] [Optimize website speed 加载优化](https://developer.chrome.com/docs/devtools/speed/get-started/)
++ [ ] [Analyze runtime performance](https://developer.chrome.com/docs/devtools/evaluate-performance/)
++ [ ] [Fix memory problems](https://developer.chrome.com/docs/devtools/memory-problems/)
 
 ## 性能监控API
-`window.performance` 对象     
-Performance API可以获取到当前页面性能相关的信息；     
+
+`window.performance` 对象
+Performance API可以获取到当前页面性能相关的信息；
 融合了之前的`performance.timing` `performance.navigation` api上的信息
 
 > 上述两个属性目前已被删除，做了向后兼容
-属性：   
+属性：
+
 + `timeOrigin` 返回性能测量开始时间的高精度时间戳 【实验性属性】
 + `memory` 返回
 
 **时间点**
+
 + perf.now() 获取一个精确到毫秒的时间戳 表示从`timeOrigin`开始到现在的时间
   + 可以在web worker中使用
 
 `timeOrigin`在不同情况下的值
+
 + 脚本的global object 是window，也就是在浏览器中  `globalThis === window`
   + 如果当前的document是第一个加载的（也就是直接在浏览器地址栏输入的）；则`timeOrigin`是创建浏览器上下文的时间
   + 如果是处于卸载窗口中已加载的文档过程中，会有确认弹窗，`timeOrigin`是在确定导航到新documnet的时间点
@@ -149,22 +152,25 @@ Performance API可以获取到当前页面性能相关的信息；
 > 这个timeOrigin与perf.timeOrigin 不一样
 
 与Date.now()的区别
+
 1. 精度高，在支持的环境下，可以精确到微秒，即带小数点
 2. worker中可用
 
 **mark相关方法**
-mark适用于在指定的位置打点，浏览器会在标记当时的`时间戳`    
+mark适用于在指定的位置打点，浏览器会在标记当时的`时间戳`
+
 + perf.mark(str) 在程序某个点创建一个标记时间戳   可以通过entry接口获取到
 + perf.clearMarks(str) 删除指定的、或者所有的标记
 
 **measure 相关方法**
+
 + perf.measure(measureName, markName1/timingName, markName2/timingName)  可以通过entry接口获取
-+ perf.clearMeasures(name) 删除指定的、所有的测量 
++ perf.clearMeasures(name) 删除指定的、所有的测量
 
 创建一个测量，需要传递测量name，以及要测量的2个节点name
 
-
 **entry 相关方法**
+
 + perf.getAllEntries(filter) 获取指定的、所有的performanceEntry
 + perf.getEntriesByName(name, type) 通过名字获取entry
 + perf.getEntriesByType(type)  通过type 获取entry
@@ -173,17 +179,20 @@ mark适用于在指定的位置打点，浏览器会在标记当时的`时间戳
   + 最小150个
 
 **序列化performance**
+
 + perf.toJson() 返回perf对象的json格式
 
-
 **触发事件**
+
 + resourcetimingbufferfull resource timing 占用溢出事件
+
 ```js
 window.addEventListener('resourcetimingbufferfull', event => { });
 ```
 
 ## PerformanceEntry
-是性能时间线上，一类性能指标的抽象    
+
+是性能时间线上，一类性能指标的抽象
 可以是以下几种
 
 + PerformanceMark
@@ -193,7 +202,9 @@ window.addEventListener('resourcetimingbufferfull', event => { });
 + PerformancePaintTiming
 
 ### 数据格式
+
 PerformanceEntry 基类的数据结构
+
 ```js
 var perfEntry = {
   name: '', 
@@ -202,13 +213,17 @@ var perfEntry = {
   duration: ''
 }
 ```
+
 PerformanceMark、PerformanceMeasure 这两种类型，完全继承基类，没有拓展
+
 #### PerformanceResourceTiming
+
 `PerformanceResourceTiming` 在 `PerformanceEntry`基类的基础上，做了拓展
 
 `PerformanceResourceTiming extends PerformanceEntry`
 
 增加了一个资源加载过程的各个时间节点的信息
+
 ```js
 var perfResourceEntry = {
   // 基类属性
@@ -239,9 +254,11 @@ var perfResourceEntry = {
 ```
 
 #### PerformanceNavigationTiming
+
 `PerformanceResourceTiming extends PerformanceEntry & PerformanceResourceTiming`
 
 增加了一个资源加载过程的各个时间节点的信息
+
 ```js
 var perfNavigationEntry = {
   // 基类属性
@@ -268,7 +285,9 @@ var perfNavigationEntry = {
 ```
 
 #### PerformancePaintTiming
+
 `PerformancePaintTiming extends PerformanceEntry`
+
 ```js
 var perfEntry = {
   name: 'first-paint | first-contentful-paint', 

@@ -138,11 +138,14 @@ location 匹配详细规则
 
 ```bash
 location /foo/ {
-
+    # 先查找是否有foo目录，如果有的话，则查找目录下是否有index.html文件
+    # 如果没有foo目录，不查找是否有foo文件
+    # 带/表明这个locatin必然是一个目录
 }
 
 location /foo {
-    
+    # 先查找是否有foo目录，有的话，则查找目录下是否有index.html文件
+    # 如果没有foo目录，则查找是否有foo文件
 }
 ```
 
