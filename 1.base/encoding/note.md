@@ -126,3 +126,5 @@ charCodeAt 会返回字符串对应位置的码元对应的10进制数
 `U+<code point>` unicode 码点
 `\uXXXX` 字符的16进制unicode编码值
 `\u{code point}`
+
+## 生僻字
