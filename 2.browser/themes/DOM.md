@@ -27,3 +27,38 @@ offsetWidth = width + padding + border;
 + Node.COMMENT_NODE = 8 注释节点
 
 +
+
+## template标签
+
+template标签的dom结构不会在页面上展示渲染，
+可以被js获取，用来动态创建dom结构
+
+> 一般用在需要用js动态创建复杂的dom结构的场景
+
+```html
+<template id="burger-template">
+  <button type="button" aria-expanded="false" aria-label="Menu" aria-controls="mainnav">
+    <svg width="24" height="24" aria-hidden="true">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+    </svg>
+  </button>
+</template>
+```
+
+```js
+// 获取到template
+const template = document.querySelector('#burger-template')
+if ('content' in template) {
+  // 复制dom结构
+  const content = template.content.cloneNode(true)
+  // 挂载到指定位置
+  container.append(content)
+}
+```
+
+相比hidden的dom结构,template有以下优点
+
++ template 内的结构式完全惰性的，图片、脚本、css等资源不会被加载，样式也不会被解析
++ template 内的结构不做合法性校验，可以包含`td`、`li`、`dd`等正常情况下需要特定父级的元素
++ 不会受css的影响。hidden的元素可能收到css的影响，出现错误展示的场景
++ template更加语义化
