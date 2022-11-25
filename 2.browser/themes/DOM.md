@@ -46,13 +46,16 @@ template标签的dom结构不会在页面上展示渲染，
 ```
 
 ```js
-// 获取到template
-const template = document.querySelector('#burger-template')
-if ('content' in template) {
-  // 复制dom结构
+// 判断支持template
+if ('content' in document.createElement('template')) {
+  // 获取到template
+  const template = document.querySelector('#burger-template')
+  // 复制dom结构 不要直接使用，直接使用可能会有错误
   const content = template.content.cloneNode(true)
   // 挂载到指定位置
   container.append(content)
+} else {
+  // 使用其他备用方式实现
 }
 ```
 
