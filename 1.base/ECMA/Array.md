@@ -17,7 +17,7 @@ Array.from(aryLike, mapFn, thisArg)
 + `类数组`
   + 拥有`length属性`和若干`索引属性`的任意对象
 + `可迭代对象`
-  + 可以获取对象中的元素，如`Map`、`Set`、`Array`等
+  + 可以获取对象中的元素，如`Map`、`Set`、`Array`、`String`等
 
 ### demo
 
