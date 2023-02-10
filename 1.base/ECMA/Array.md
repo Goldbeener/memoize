@@ -19,7 +19,7 @@ Array.from(aryLike, mapFn, thisArg)
 + `可迭代对象`
   + 可以获取对象中的元素，如`Map`、`Set`、`Array`、`String`等
 
-### demo
+### 应用场景
 
 **创建一个队列**
 
@@ -44,4 +44,17 @@ Array.from.call(NotArray, { '0': 'foo', '1': 'bar', length: 2}) // { '0': 'foo',
 
 // 当this不是构造函数时，正常返回数组
 Array.from.call({}, { '0': 'foo', '1': 'bar', length: 2}) // ['foo', 'bar']
+```
+
+**数组深拷贝**
+
+```js
+function recursiveClone(val) {
+  return Array.isArray(val) ? Array.from(val, recursiveClone) : val
+}
+
+const numbers = [[0, 1, 2], ['one', 'two', 'three']];
+const numbersClone = recursiveClone(numbers);
+
+numbers[0] === numbersClone[0] // false
 ```
