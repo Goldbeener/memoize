@@ -118,7 +118,8 @@ TBT量化主线程在空闲之间的繁忙程度
 
 ### 参考文章
 
-- [ ] [Optimize website speed 加载优化](https://developer.chrome.com/docs/devtools/speed/get-started/)
++ [ ] [Optimize website speed 加载优化](https://developer.chrome.com/docs/devtools/speed/get-started/)
+
 + [ ] [Analyze runtime performance](https://developer.chrome.com/docs/devtools/evaluate-performance/)
 + [ ] [Fix memory problems](https://developer.chrome.com/docs/devtools/memory-problems/)
 
@@ -315,3 +316,8 @@ const observer = new PerformanceObserver();
 observer.observe({ entryTypes: ['mark'], type: 'mark'  }); // 指定仅观测mark类型entry
 
 ```
+
+## Jank
+
+Jank web性能术语 关系到页面的流畅度
+包括滚动、过渡、动画等效果的流畅度

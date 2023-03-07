@@ -281,6 +281,7 @@ new Promise(resolve => {
 console.log(4)
 
 3.
+
 class Scheduler {
     add(promiseCreator) { ... }
     // ...
@@ -373,6 +374,7 @@ fn.call({b:1})
 ````````````
 
 #####  请实现方法`curry(Function) => Function`，传入一个多参函数，返回单参函数
+
 example:
 
 ```
@@ -514,6 +516,8 @@ css BFC
 2.border-box 和content-box的区别
 3.CSRF的攻击者需要拿到用户的cookie吗
 4.<script defer sync>
+   async 下载过程不阻塞html解析；但是下载完成之后，立马开始解析、执行js，阻塞html解析
+   defer 下载过程不阻塞html解析；下载完成不理吗解析、执行js，等到html解析完之后再执行，在DOMContentLoaded之前
 5.var p = new Person() new的过程发生了什么
 6.Object.prototype.__proto__
 7.Function.prototype.__proto__

@@ -4,6 +4,19 @@
 
 Node Package Manager node包管理器
 
+### npx
+
+主要作用
+
+1. 在命令行调用项目安装的内部模块
+   1. 项目内部模块一般可以在npm script中或是项目脚本里面是用，不能直接在命令行下使用
+2. 避免全局安装模块
+   1. npx create-react-app my-react-app
+      1. npx下载create-react-app到临时目录，使用之后再删除
+3. 使用不同版本node
+4. 执行github源码
+   1. npx <https://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32>
+
 ## Yarn
 
 ## pnpm
@@ -88,3 +101,73 @@ pnpm安装的包会统一下载在一个文件夹内
 > 硬链接和软链接
 > 文件名是指针，硬链接是和文件名同一级别的指针，软链接是指向指针的指针。
 > 所有的硬链接都指向同一块磁盘，删除一个指针不会真正删除文件，删除所有指针才会删除文件
+
+## corepack
+
+1. corepack 是node16.9.0/14.19.0 增加的实验性工具
+2. 管理包管理工具的版本 `package manager manager`
+
+> 使用指定的包管理工具而无需安装
+
+目前支持yarn和pnpm
+
+2个核心优点
+
+1. 降低协作成本，直接使用指定的包管理器即可，无需手动安装
+2. 保证团队内统一包管理工具
+
+### 用法
+
+配置
+
+```json
+// package.json
+{
+  "name": "moduleName",
+  "packageManager": "pnpm@7.17.1", // 指定包管理器名称及版本
+}
+```
+
+使用
+
+```bash
+corepack enable
+
+pnpm i # 直接使用，无需手动安装pnpm 有点npx的味道
+
+yarn intsall # 使用yarn会报错
+# Usage Error: This project is configured to use pnpm
+```
+
+## pnpm monorepo
+
+workspace声明： `pnpm-workspace.yaml`
+
+引用：`"foo": "workspace:*/~/^"`
+
+## 按需引入
+
+四类按需引入实现方式
+
++ 异步加载
+  + ES6 import()
++ 按需引入
+  + babel-plugin-import
++ 按需剔除 tree-shaking
+  + esm
+  + sideEffects
++ 按需引入
+  + 条件编译
+
+## npm包入口声明
+
+打包器在解析包时，支持解析的package.json字段
+
++ `main` 标准字段，node使用， cjs产物入口（es5）
++ `module` 非标准字段 各大打包器支持  esm产物入口，搭配tree-shaking
+  + node中有类似的字段  `type: module`
++ `browser` 非标准字段 浏览器专用产物入口
++ `style` 非标准字段 css入口文件
++ `typings/types` ts 声明文件入口
++ `unpkg`
++ `jsdelivr`

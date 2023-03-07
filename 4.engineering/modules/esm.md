@@ -22,6 +22,44 @@ ECMA 官方的module规范
 <script nomodule defer src="fallback.js"></script>
 ```
 
+在支持esm的浏览器中，会按照deferred的方式加载main.mjs，忽略nomoudle标示的fallback.js的加载和执行
+
+在不支持esm的浏览器中，main.mjs不会被加载，但是fallback.js会被加载，搭配使用达到优雅降级的效果
+
+### polyfill
+
+Safari 10.1 支持 es modules, 但是不支持`nomodule`属性：它总是会加载`<script nomodule>` 标签的内容。
+
+以下代码片段可以阻止Safari 10.1加载`nomodule`引入的外部资源
+
+```js
+// 借助 Safari supports the non-standard 'beforeload' event.
+(function(){
+  var check = document.createElement('script');
+
+  if (!('noModule' in check) && 'onbeforeload' in check) {
+      var support = false;
+      
+      document.addEventListener('beforeload', function(e) {
+         if (e.target === check) {
+            support = true;
+         } else if (!e.target.hasAttribute('nomodule') || !support) {
+            return;
+         }
+         e.preventDefault();
+      }, true);
+
+      check.type = 'module';
+      check.src = '.';
+      document.head.appendChild(check);
+      check.remove();
+  }
+})()
+```
+
+> this will **not** prevent inline script, e.g.:
+> `<script nomodule>alert('no modules');</script>.`
+
 ### 相关特点
 
 1. 多次引入同一个模块，模块只会执行一次
@@ -29,7 +67,10 @@ ECMA 官方的module规范
 2. 模块和依赖是以cors的形式加载的，会有跨域问题
    1. 这个地方是说，在html中直接引入module，浏览器会发起一个http请求，去获取对应的模块，如果模块的路径是在线资源，会有跨域问题
    2. 模块之间的依赖引入，也是以http请求的形式获取的
-3. script的async属性，会使对应文件异步下载不阻塞html渲染，但是下载完成会立马执行
+3. module script 默认按照defer策略加载执行
+   1. 先并行加载esm及其所有依赖，然后在parse之后统一执行
+   2. 所以`<script type=module>`不需要手动增加`defer`属性
+4. module script 添加 async属性，会使对应文件异步下载不阻塞html渲染，但是下载完成会立马执行
    1. 该属性在原来非module模式下，仅适用于加载外部js，对内联js无效
    2. 但是在module模式下，对内联js模块也是有效的
 
