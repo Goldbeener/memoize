@@ -1,3 +1,5 @@
 # tapable
 
-webpack 插件系统
+为插件系统创建hooks
+
+> webpack 插件系统
