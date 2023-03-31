@@ -32,6 +32,7 @@
   + `GB2312` 2字节(高低字节、7位编码)存储码点、解析码点 （最高位都是1，低7位是有效位）
   + `GB18030` 124字节变长编码
 + `BIG5` 2字节（双8码、高低字节） 存储、解析码点
++ `Unicode`
 
 ## Unicode
 
@@ -46,7 +47,9 @@
 > 字符集是字符与二进制码的映射关系
 > 字体文件是码点与图形的映射关系，如果一个字体文件内没有对应字符的码点与图形映射，那就不能正常的渲染对应的字符
 
-**Unicode与其他的字符集的区别是**，unicode只是字符集规范，只是定义了字符与二进制码的映射关系，并没有规定二进制码的存储方式。
+**Unicode与其他的字符集的区别是**
+unicode只是字符集规范，
+只定义了字符与二进制码的映射关系，并没有规定二进制码的存储方式。
 
 > 其他的GBxx是字符集和存储方式合集，既定义了二进制码也规定了二进制码的存储方式
 
@@ -86,6 +89,21 @@ utf-32 规范，规定所有的unicode码点都使用32位4字节空间来存储
 + 常见的字符 使用双字节16bit存储、解析
 + 常见字符之外的，使用4字节存储、解析
 
+UTF-16 编码实现 
+```js
+// 单个字符的 UTF-16 编码
+const char = '\u0041';
+console.log(char.charCodeAt(0).toString(16)); // 41
+
+// 大于 0xFFFF 的字符的 UTF-16 编码
+const codePoint = 0x1F600;
+const highSurrogate = Math.floor((codePoint - 0x10000) / 0x400) + 0xD800;
+const lowSurrogate = ((codePoint - 0x10000) % 0x400) + 0xDC00;
+const utf16 = String.fromCharCode(highSurrogate, lowSurrogate);
+console.log(utf16.charCodeAt(0).toString(16)); // d83d
+console.log(utf16.charCodeAt(1).toString(16)); // de00
+```
+
 ### UTF-8
 
 可变长度字符编码，使用1-4个字节存储、解析字符
@@ -105,12 +123,23 @@ utf-32 规范，规定所有的unicode码点都使用32位4字节空间来存储
 `str.length` 返回字符串中UTF-16代码单元的个数，也就是码元的个数
 `str.charAt(index)` 返回字符串中直接位置的字符
 
-`str.charCodeAt(index)` 返回字符串指定位置码元对应的10进制整数
+`str.charCodeAt(index)` 返回字符串指定位置`码元`对应的10进制整数
 js中的字符串，基本面字符都是使用1个码元(2个字节存储)，扩展面的使用2个码元(4字节存储)
 charCodeAt 会返回字符串对应位置的码元对应的10进制数
 
-`str.codePointAt(pos)` 返回字符串指定位置字符的码点对应的10进制整数
+`str.codePointAt(pos)` 返回字符串指定位置字符的`码点`对应的10进制整数
 扩展面的字符组成的字符串会有错位的问题
+
+> 如果codePointAt() 参数默认是0
+> 如果pos位置是字符的高端，返回整个字符完整的码点值
+> 如果pos位置是字符的低端，返回字符低端码点值
+>
+> charCodeAt 与 codePointAt 在基本平面区域表现一致
+> 在扩展平面，要使用codePointAt， charCodeAt处理不了
+>
+> charCode 和 codePoint 关系
+> codePoint是对charCode增强版，在基本平面，charCode 和 codePoint等同
+> 但是在扩展平面charCode无法正确表示，因此才新增了codePoint
 
 `String.formCharCode(index)` 返回码元号对应的字符串
 `String.formCodePoint(index)` 返回码点数对应的字符串
@@ -126,8 +155,48 @@ charCodeAt 会返回字符串对应位置的码元对应的10进制数
 
 ## 相关写法
 
-`U+<code point>` unicode 码点
 `\uXXXX` 字符的16进制unicode编码值
-`\u{code point}`
+`\u{code point(16进制)}`
+
+这两种写法能被js识别
+
+`U+<code point 16进制>` unicode 码点 指代一个确定的unicode字符，但是这个写法并不能在js中识别
+
+```js
+<U+6c49>  代表 '汉' 这个字符 
+
+// 这两种写法可以在js中识别
+const a = '\u6c49'
+const b = '\u{6c49}'
+
+```
+
+## 字体文件
+
+### 字体文件设计要素
+一个字体文件通常包含以下影响字体呈现的因素
+1. `字体类型` 决定字体整体外观，包括衬线和非衬线
+2. `字形` 决定字体的具体形状和样式，如圆润、方正、斜体等
+3. `字体大小` 指字体的相对大小，通常以点数或像素为单位
+   1. [font metrics](../css/font.md)
+4. `字体粗细` 字体粗细程度
+5. `字体间距` 字符之间的距离和行间距
+6. `字符集` 指字体文件包含的字符集合，不同的字体包含不同的字符集，只有在字符集内的字符才能被正常渲染
+
 
 ## 生僻字
+### 产生的原因
+
+1. 浏览器默认加载一组字体文件，这些字体文件包含大多数常用的字符，但是不包含所有的生僻字，因此没有对应生僻字字符的字形信息，无法渲染
+2. 页面编码和字符编码问题，导致无法匹配生僻字字符，因而无法正确渲染
+
+web页面编码基本上是`utf-8`
+字体文件一般是使用unicode编码
+这样web页面和字体文件可以匹配
+
+### 解决方案
+
+1. 使用字体文件，使用`@font-face`额外加载包含生僻字的字体文件
+   1. 会产生额外的网页加载性能损耗
+2. 图像替代，将无法展示的生僻字，使用图像替代
+   1. 影响网页的可访问性，影响SEO
