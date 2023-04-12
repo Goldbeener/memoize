@@ -8,6 +8,8 @@ const getRandom = (function () {
     return Math.ceil(rnd() * number);
   };
 })();
+
+// 包含5
 myNum = getRandom(5);
 
 // 获取随机数

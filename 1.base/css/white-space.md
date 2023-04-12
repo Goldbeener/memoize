@@ -32,3 +32,25 @@ white-space: normal | nowrap | pre | pre-wrap | pre-line | break-spaces;
 + normal 只能在单词间空白换行
 + anywhere 空白
 + break-word  
+
+## line-break
+中文中标点符号，
+
+**避首标点**，不能出现在一行的开头，如句号`。` 问号`？`
+**避尾标点**，不能出现在一行的末尾，如上引号`“`，上书名号`《`
+
+因此有的时候，一行末尾能够放下一个字，但是这个字后面跟一个句号，这个字也被放到了下一行；
+
+针对行首、行尾标点符号的处理, 需要用到CSS属性是`line-break`
+
+line-break 主要用在CJK语言中，也就是中日韩3种语言中
+
+```css
+line-break: auto;
+line-break: loose;
+line-break: normal;
+line-break: strict;
+line-break: anywhere;
+```
+
+
