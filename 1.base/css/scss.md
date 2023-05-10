@@ -47,6 +47,12 @@ Sass 在3.0版本之前，是以`.sass`作为后缀名的；
 + 函数   内置函数用于颜色转换、字符串处理、算术运算
 + 导入   @import "path"
 
+SCSS
+
+css提取
+css loader
+style loader
+
 # Less
 
 Less 是一门向后兼容的css扩展语言
@@ -86,10 +92,24 @@ PostCSS 是一个基础设施，它可以让一系列插件在其上运行。 �
 
 > PostCSS 是在其他css预处理器完成工作之后，在生成的css文件中作用的
 
-# Css Modules
+# CSS Modules
+所有类名和动画名默认都有各自的作用域的css文件
 
-SCSS
+既不是官方标准，也不是浏览器特性，是在构建步骤中使用工具对CSS类名和选择器限定作用域的一种方式
+类似命名空间
 
-css提取
-css loader
-style loader
+在CSS modules里面，类名是动态生成的、唯一的，准确对应到源文件中的各个类样式
+这是实现样式作用域的原理
+
+## 作用
+保证单个组件的所有样式
++ 集中在同一个地方
++ 只应用于该组件
++ 书写同名类名也不担心被覆盖
+
+
+## 特性
++ composes
++ scope
+  + global
+  + locla

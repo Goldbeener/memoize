@@ -92,7 +92,7 @@ font-size设置的值表示什么？
 
 也就是按照font设计值对应的高度，实际的值还需要按照HHead的值做缩放
 
-### line-box
+### line-box 行框
 
 p标签内，包含多个span元素或者纯文本元素，因为宽度问题，换行展示
 
@@ -108,7 +108,7 @@ p标签内，包含多个span元素或者纯文本元素，因为宽度问题，
 > 
 > 字体的内部是HHead ascent/ descent 高度决定
 
-##### inline-box
+##### inline-box 行内框
 
 inline-elements
 
@@ -132,16 +132,43 @@ inline-elements
 
 ![](https://iamvdo.me/content/01-blog/30-css-avance-metriques-des-fontes-line-height-et-vertical-align/line-height.png)
 
-content-area 与 virtual-area 的差值叫做leading；leading的值平均分配在content-area的上下两边，也就是说content-area在virtual-area区域中始终是居中的
+content-area 与 virtual-area 的差值叫做[leading](#leading-行距)；leading的值平均分配在content-area的上下两边，也就是说content-area在virtual-area区域中始终是居中的
 
 line-height也就是virtual-area的高度可能等于content-area，也可能大于或小于。小于的情况下，leading是负值
 
 - 对于普通inline元素，padding、border会增加background区域，但是不会影响content-area的高，也不会影响line-box的高度； margin-top/bottom没有影响
   
 - 对于特殊的inline元素，高度是由height、margin、border等属性共同决定的，如果height值是auto，line-height（virtual height） === content-area
-  
+
+
+**内容区域**
+行内元素都有一个内容区域，与字体尺寸（font-metrics）决定
+
+**行内框与行高**
+行内元素生成一个行内框，
+在默认情况下，行内框与内容区域相同
+设置了行高之后，由行高的值确定，行高大于内容区域的部分，均匀分布在内容区域上下两侧
+
+一行内多个行内框，那么这个行框的高度由最高的那个行内框的高度决定
+
 
 ## line-height
+
+文本行的`基线baseline`之间的垂直距离
+
+> 文本行之间的空白距离，不仅由行高决定，还受字号的影响
+
+
+### leading 行距
+手工印刷时，为了调整行与行之间的空间，在两行字块之间塞入薄薄的铅条，用以分割两行
+
+沿用下来`行距`的概念
+
+行距 = 行高 - 字体尺寸
+
+
+
+
 
 line-height： normal？ 意味着什么
 
@@ -189,7 +216,7 @@ line-box的baseline，与容器的baseline重合
 
 ### middle
 
-子元素的中线，与容器的`baseline + x-height/2` 位置对齐
+子元素的中线，与容器的`baseline + xHeight/2` 位置对齐
 
 会因为容器字体的不同，会有不同的表现
 
@@ -220,3 +247,28 @@ line-box的baseline，与容器的baseline重合
   + 使用getImageData对渲染出来的内容进行分析
 + [opentype.js](https://github.com/opentypejs/opentype.js)
   + 解析字体文件，ttf、woff等，获取字体的metrics信息
+
+
+
+字体度量
+content-area： font-metrics
+virtual-area： line-height
+
+
+行高 line-height
+行距 leading
+行内框 inline-box
+行框 line-box
+
+virtual-align (only inline-box)
+  + `top/bottom` 行内框的top/bottom与行框line box的top/bottom对齐
+  + `text-top/text-bottom` 行内框的顶端同文本(content-area)的top/bottom对齐
+  + `baseline` 行内框的baseline与行框的baseline对齐
+  + `middle` 行内框的中线与行框内文本中线对齐
+    + 中线定义，baseline + x-height/2s
+  + `super/sub` 元素的基线与父元素的上/下标基线对齐
+  + `百分比/长度值` 可以使元素的基线相对于父元素的基线上下移动，正值上移，负值下移
+    + 百分比基于行高
+
+行内文字与图片对齐
+
