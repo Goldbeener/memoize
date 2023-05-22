@@ -171,3 +171,6 @@ workspace声明： `pnpm-workspace.yaml`
 + `typings/types` ts 声明文件入口
 + `unpkg`
 + `jsdelivr`
+
+`type: module` 代表包的源码是使用esm规范
+`exports`
