@@ -32,7 +32,6 @@
   
 - descender line 与小写字母x相比，向下延伸的那些小写字母的最低点所在的线
   
-
 **几个高度**
 
 - x-height 基线之上，小写字母x的高度
@@ -45,7 +44,6 @@
   
 - line-gap descender line到下一行ascender line之间的距离
   
-
 > line-gap 并不是行距，行距是两行文字基线之间的距离
 
 ## 字体渲染
@@ -81,7 +79,7 @@ HHead Ascent: 1100
 HHead Descent: 540
 
 > 通常字体文件还有一组Win Ascent / Win Descent；是供windows系统渲染使用。这组值也可能有不同的值
-> 
+>
 > HHead: Horizontal Header table
 
 ### font-size的值
@@ -103,9 +101,9 @@ p标签内，包含多个span元素或者纯文本元素，因为宽度问题，
 行内盒子的高度，是由该行内元素的child的最高点和最低点确定的，一个行内元素默认总是包裹所有的子内容。（tall enough to contain all its children）
 
 > 总的来说就是行内盒子是由内容高度决定的
-> 
+>
 > 内容又是由字体大小决定的
-> 
+>
 > 字体的内部是HHead ascent/ descent 高度决定
 
 ##### inline-box 行内框
@@ -116,12 +114,11 @@ inline-elements
   
 2. 特殊inline元素
   
-  1. replaced inline elements (`<img>`, `<input>`, `<svg>`, etc.)
-    
-  2. `inline-block` and all `inline-*` elements
-    
-  3. inline elements that participate in a specific formatting context (eg. in a flexbox element, all flex items are *blocksified*)
-    
+1. replaced inline elements (`<img>`, `<input>`, `<svg>`, etc.)
+
+2. `inline-block` and all `inline-*` elements
+
+3. inline elements that participate in a specific formatting context (eg. in a flexbox element, all flex items are *blocksified*)
 
 所有的行内元素有2个高度
 
@@ -129,7 +126,6 @@ inline-elements
   
 2. virtual-area 高度就是line-height高度，用来参与计算line-box的高度, 也就是占位的高度
   
-
 ![](https://iamvdo.me/content/01-blog/30-css-avance-metriques-des-fontes-line-height-et-vertical-align/line-height.png)
 
 content-area 与 virtual-area 的差值叫做[leading](#leading-行距)；leading的值平均分配在content-area的上下两边，也就是说content-area在virtual-area区域中始终是居中的
@@ -139,7 +135,6 @@ line-height也就是virtual-area的高度可能等于content-area，也可能大
 - 对于普通inline元素，padding、border会增加background区域，但是不会影响content-area的高，也不会影响line-box的高度； margin-top/bottom没有影响
   
 - 对于特殊的inline元素，高度是由height、margin、border等属性共同决定的，如果height值是auto，line-height（virtual height） === content-area
-
 
 **内容区域**
 行内元素都有一个内容区域，与字体尺寸（font-metrics）决定
@@ -151,24 +146,19 @@ line-height也就是virtual-area的高度可能等于content-area，也可能大
 
 一行内多个行内框，那么这个行框的高度由最高的那个行内框的高度决定
 
-
 ## line-height
 
 文本行的`基线baseline`之间的垂直距离
 
 > 文本行之间的空白距离，不仅由行高决定，还受字号的影响
 
-
 ### leading 行距
+
 手工印刷时，为了调整行与行之间的空间，在两行字块之间塞入薄薄的铅条，用以分割两行
 
 沿用下来`行距`的概念
 
 行距 = 行高 - 字体尺寸
-
-
-
-
 
 line-height： normal？ 意味着什么
 
@@ -179,7 +169,7 @@ line-height： normal情况下， 最终的值是：
 （content-area + line-gap）/ em-square * font-size
 
 > 因此将line-height设置为1是一个不太好的做法
-> 
+>
 > 因为line-height的无单位数值是以font-size为基准的，这个值与实际的content-area还是不同的，可能会导致virtual-area的值小于content-area
 
 以Arial字体为例
@@ -211,7 +201,7 @@ content-area： （1854 + 434 ） / 2048 * 100 = 112px
 line-box的baseline，与容器的baseline重合
 
 > 在使用vertical-align的时候，容器默认会有一个不可见的零宽字符，这个字符应用该容器的字体，决定了容器的baseline位置
-> 
+>
 > 使用vertical-align的时候，就是用这个零宽字体确定的容器的baseline与子元素的baseline做定位
 
 ### middle
@@ -226,7 +216,7 @@ line-box的baseline，与容器的baseline重合
 
 是子元素baseline，相对于父元素的baseline做上下移动，正数向上，负数向下
 
-**所有的vertical-align，对齐的都是virtual-area，也就是line-height决定的区域** 
+**所有的vertical-align，对齐的都是virtual-area，也就是line-height决定的区域**
 
 ## 关于字体的一些问题
 
@@ -240,20 +230,18 @@ line-box的baseline，与容器的baseline重合
 
 不过，可以根据上面的知识，在已知具体的某一类字体度量情况下，对该字体做微调。但是这个并不通用，前提条件是知道字体的度量值，或者运行时动态获取。
 
-
 ## Font Metrics 获取方式
-+ [FontMetrics.js](https://github.com/soulwire/FontMetrics)
-  + 使用Canvas渲染对应字体的文字，
-  + 使用getImageData对渲染出来的内容进行分析
-+ [opentype.js](https://github.com/opentypejs/opentype.js)
-  + 解析字体文件，ttf、woff等，获取字体的metrics信息
 
+- [FontMetrics.js](https://github.com/soulwire/FontMetrics)
+  - 使用Canvas渲染对应字体的文字，
+  - 使用getImageData对渲染出来的内容进行分析
 
+- [opentype.js](https://github.com/opentypejs/opentype.js)
+  - 解析字体文件，ttf、woff等，获取字体的metrics信息
 
 字体度量
 content-area： font-metrics
 virtual-area： line-height
-
 
 行高 line-height
 行距 leading
@@ -261,14 +249,42 @@ virtual-area： line-height
 行框 line-box
 
 virtual-align (only inline-box)
-  + `top/bottom` 行内框的top/bottom与行框line box的top/bottom对齐
-  + `text-top/text-bottom` 行内框的顶端同文本(content-area)的top/bottom对齐
-  + `baseline` 行内框的baseline与行框的baseline对齐
-  + `middle` 行内框的中线与行框内文本中线对齐
-    + 中线定义，baseline + x-height/2s
-  + `super/sub` 元素的基线与父元素的上/下标基线对齐
-  + `百分比/长度值` 可以使元素的基线相对于父元素的基线上下移动，正值上移，负值下移
-    + 百分比基于行高
+
+- `top/bottom` 行内框的top/bottom与行框line box的top/bottom对齐
+- `text-top/text-bottom` 行内框的顶端同文本(content-area)的top/bottom对齐
+- `baseline` 行内框的baseline与行框的baseline对齐
+- `middle` 行内框的中线与行框内文本中线对齐
+  - 中线定义，baseline + x-height/2s
+- `super/sub` 元素的基线与父元素的上/下标基线对齐
+- `百分比/长度值` 可以使元素的基线相对于父元素的基线上下移动，正值上移，负值下移
+  - 百分比基于行高
 
 行内文字与图片对齐
 
+## font-family
+
+font-family: `<family-name>` | `<generic-name>`
+
+`<family-name>` 字体族名 是专指具体的某一个特定字体，可以包含空格，有空格时加引号
+`<generic-name>` 通用字体族名 泛指一类字体，是关键字，不可以加引号，作为兜底备用
+
+常见通用字体族
+
+- serif
+- sans-serif
+- monospace
+- cursive
+- fantasy
+- system-ui
+- math
+- emoji
+- fangsong
+
+font-family的值，是一组字体族名或通用字体族名，以逗号隔开，优先级递减
+
+浏览器渲染字符时，逐个字符按照上述优先级顺序，挑选合适的字体族
+可能同一行文本中的字符，应用了不同的字体族
+
+并且字体族的应用还受到`font-weight`、`font-style`、`font-size`的影响
+因为某些字体族可能没有设计对应`font-weight: bold`,`font-style: italic`等风格
+这时候就会使用后续的符合条件的字体族
