@@ -1,9 +1,11 @@
 ## render function
+
 渲染函数是完整的响应性渲染系统的另一半
 
 是渲染函数和data属性中的数据有依赖关系
 
-## template 
+## template
+
 模版渲染
 
 基础渲染;
@@ -12,28 +14,29 @@ Template
 --> (retruns) Virtual DOM
 --> (generates) Real DOM;
 
-
 ## render function Vs Template
+
 他们的最终目标都是为了，**声明式的描述DOM结构与状态的关系**。
 
 template
+
 + 静态
 + 受限，有一些格式化的写法，语法糖
 + 容易做优化
 
 render function （jsx）
+
 + 动态 不容易实现优化
 + 更加灵活，渲染函数内可以自由的编写代码
 + 不必实现的新的语法
 
-
-> render 
+> render
 > template
 > el
 > 三个属性
 
-
 ### 动态渲染标签
+
 ```html
 <!-- useage -->
 <example :tags="['h1', 'h2', 'h3']"></example>
@@ -64,6 +67,7 @@ render function （jsx）
 ```
 
 ### 动态渲染组件
+
 ```html
 <!-- ok true => foo  false => bar -->
 <div id='app'>
@@ -115,6 +119,7 @@ render function （jsx）
 ```
 
 ### 函数式组件
+
 ```html
 <script>
 Vue.component('example', {
@@ -135,6 +140,7 @@ Vue.component('example', {
 ```
 
 ### 高阶组件
+
 接收半成品的状态，根据这个状态，做一些逻辑处理，最终根据处理后的数据，返回组件
 
 > 貌似看是在一个基础组件上，做一些逻辑的封装
