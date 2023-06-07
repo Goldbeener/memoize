@@ -8,6 +8,8 @@
 
 ## web app 内存探测
 
+### web api
+
 ```js
 navigator.storage.estimate().then((res) => {
     const { usage, quota } = res;
@@ -16,3 +18,7 @@ navigator.storage.estimate().then((res) => {
     // quota 配额
 })
 ```
+
+### 脚本计算localStorage
+
+[计算localStoarge容量](../../6.practice/calc-localStorage-size.md)
