@@ -37,7 +37,7 @@ Node Package Manager node包管理器
 3. 将依赖从离线镜像解压到本地缓存
 4. 将依赖从缓存拷贝到当前目录的node_module目录
 
-1. 将所有包按照<package>@<version>硬链接在`node_modules/.pnpm`目录下
+1. 将所有包按照`<package>@<version>`**硬链接**在`node_modules/.pnpm`目录下
    1. 此时类似npm/yarn的逻辑，将所有包拍平
 2. 根据依赖关系，将依赖包软链到合适的位置，确定依赖关系
 3. 将直接依赖软链提升到`node_modules`目录下
@@ -173,4 +173,4 @@ workspace声明： `pnpm-workspace.yaml`
 + `jsdelivr`
 
 `type: module` 代表包的源码是使用esm规范
-`exports`
+`exports`: 代表包对外暴露的入口
