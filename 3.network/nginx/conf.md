@@ -161,7 +161,7 @@ alias 是 `alias值 + 资源名` 作为完整的资源路径，真正请求uri�
 ```bash
 location /location {
     alias /path/to/file/  # 匹配的路径下的资源，是直接在alias值 + uri中去掉location剩余的path 才是最终的资源路径
-    root /roo/path/ # 匹配的路径下的资源，需要在前面拼接上root前缀，才是资源完整的路径
+    root /root/path/ # 匹配的路径下的资源，需要在前面拼接上root前缀，才是资源完整的路径
 } 
 
 
