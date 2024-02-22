@@ -321,3 +321,23 @@ observer.observe({ entryTypes: ['mark'], type: 'mark'  }); // 指定仅观测mar
 
 Jank web性能术语 关系到页面的流畅度
 包括滚动、过渡、动画等效果的流畅度
+
+## Performance
+
+### performace.now()
+
+表示从页面 `performance.timing.navigationStart` 开始，经过的**毫秒数**，
+是浮点数，会有小数部分，精度最高可达微秒级
+
+常用在做性能监控等对时间精度要求较高的场景
+
+```js
+performance.now() // 
+
+```
+
+**VS Date.now()**
+
+`Date.now()` 表示从1970年开始到现在经过的毫秒数，是一个整数
+
+`performance.timing.navigationStart` + performance.now() = Date.now()

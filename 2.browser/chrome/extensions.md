@@ -43,5 +43,5 @@ service-work无法访问window，因此不能使用localStorage
 插件提供了`chrome.storage.local`api，在本地存储数据
 
 定时器
-插件中因为sw会随时因为tab关闭而种植，导致setTimout、setInterval失效
+插件中因为sw会随时因为tab关闭而终止，导致setTimout、setInterval失效
 因此，chrome插件提供了`chrome.alarms`api, 来实现延时、定时任务
