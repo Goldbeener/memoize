@@ -30,8 +30,13 @@ worker 是运行在独立于js引擎主线程之外的一个线程。
 
 ## Service Worker
 
+是一种服务工作线程，是一种在浏览器背后运行的脚本，用于处理网络请求和缓存等任务
+一种在浏览器与网络之间的中间层，允许开发者拦截和控制页面发出的网络请求，以及管理缓存，从而实现离线访问、性能优化和推送通知等功能
+
 是worker的一种
    意味着运行在一个独立的线程
+
+在浏览器背后独立运行，与网页分开，意味着用户即使关闭了网页，仍然可以运行
 
 **本质**  明确的应用定位
 充当web应用、cache、network/服务器 之间的代理服务器。
@@ -64,6 +69,15 @@ Cache 对象，在service worker下常用
 + Layout worklets
 + Paint worklets
 + Animation worklets
+
+## SharedWorker
+
+一种特定类型的worker
+可以在**同源**的不同的window、iframes、甚至其他woker 中被访问
+
+创建一个全局的scope，不同的实例可以访问这个scope，并且相互通信
+
+> 而web worker仅能在创建它的script中能访问到，并且这些worker都是绑定在对应页面，相互之间不共享
 
 ## references
 

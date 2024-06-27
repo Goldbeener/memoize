@@ -1,16 +1,18 @@
 # 异步与同步
+
 一般操作可以分为2个步骤
     1. 发起调用
     2. 得到结果
 发起调用，立马可以得到结果的是为`同步`
 发起调用，无法立即得到结果，需要额外的操作才能得到结果的是为`异步`
 
-
 single threaded
-single concurrent 
+single concurrent
 
 # 宏任务与微任务
+
 ## 宏任务
+
 + 主代码片段
 + setTimeout/setInterval/setImmediate(node)
 + I/O
@@ -23,6 +25,7 @@ single concurrent
 在`本轮宏任务结束 + 微任务队列清空`之后, 可能会发生一波`render update`
 
 一个完整的event loop
+
 1. task
 2. micro-tasks
 3. 可能的ui-rending (是否能保证60Hz刷新频率)
@@ -33,13 +36,11 @@ single concurrent
 浏览器render更新时机？
 以及其与宏任务的关系？
 
-**在一次tick所有微任务执行完成之后，会判断一下是否需要执行ui-render**     
-什么时候需要，什么时候不需要？     
+**在一次tick所有微任务执行完成之后，会判断一下是否需要执行ui-render**
+什么时候需要，什么时候不需要？
 浏览器会判断在此时渲染，是否有收益，因为浏览器只要保证60Hz的频率就可以，如果even-loop的间隔小于16ms，那么及时渲染也不会应用，属于是无效的，
 
 所以并不是每次event-loop都会伴随着浏览器更新
-
-
 
 + [event-loop与浏览器渲染](https://github.com/aooy/blog/issues/5)
 + [event-loop](https://html.spec.whatwg.org/multipage/webappapis.html#event-loop)
@@ -58,7 +59,6 @@ single concurrent
     并且因为冒泡的原因，会直接触发外层click事件 [.click()同步触发了2个事件]
     此时可以理解为：调用栈内直接塞入了2个click绑定函数
     因此会把这两个绑定函数先执行，等调用栈内清空之后才开始微任务队列清空和下一次loop
-    
 
 断点对mutationObserver和promise的执行顺序影响？
 
@@ -74,6 +74,7 @@ mutationObserver触发机制
                 再将mo回调推入微任务队列
 
 ## 微任务
+
 + Promise.then/catch/finally  await之后的也是微任务
 + process.nextTick
 + Object.observe
@@ -100,14 +101,15 @@ mutationObserver触发机制
 
 Call Stack || Micro Tasks || Task Queue || rAF || Render Tree || Layout || Paint || <OS Native calls to draw the pixels on a screen>
 
-DOM (new changes), 
-CSSOM (new changes), 
-render tree, 
-layout 
-paint 
-happen after requestAnimationFrame callback as per the event-loop timers. 
+DOM (new changes),
+CSSOM (new changes),
+render tree,
+layout
+paint
+happen after requestAnimationFrame callback as per the event-loop timers.
 
 # Event Loop
+
 调度这些事件
 events、user interaction、 scripts、rendering、networking
 
@@ -115,18 +117,18 @@ events、user interaction、 scripts、rendering、networking
 每一个web worker也有自己的event loop
 同源的浏览器tab共享一个线程？进而共享一个event-loop？
 
-
 有`1+个`task queues
     task
         + events
         + parsing html解析
         + callbacks
         + using a resource  非阻塞的资源获取，一旦资源部分或全部可用之后，对资源的处理会是一个task
-        + reacting to DOM manipulation 
+        + reacting to DOM manipulation
 
 有`1个` microtask queue
 
 # Promise
+
 + Promise()
 + Promise.resolve()
 + Promise.reject()
@@ -141,6 +143,7 @@ events、user interaction、 scripts、rendering、networking
 ## 组合
 
 ### Promise.all()
+
 并行发起多个异步操作，
     只有所有的异步操作都resolve时，返回结果组成的数组（按照传入顺序）
     如果有任何rejected，那么直接将第一个reject错误信息抛出去
@@ -156,6 +159,7 @@ Promise.all([func1(), func2(), func3()])
 ```
 
 #### 异步同步
+
 当传入的可迭代对象内包含值（无论是promise还是其他非promise值），那么all就是异步的；
 当传入的可迭代对象是空的，空数组或者空map、set； all是同步的，直接fulfilled
 
@@ -179,10 +183,10 @@ setTimeout(() => {
 })
 ```
 
-
 ## Promise
 
 ### Promise 多个then嵌套问题
+
 promise.then(() => {})
 
 then注册就是将其放入微任务队列
@@ -190,4 +194,3 @@ then注册就是将其放入微任务队列
 then的注册是在绑定的Promise的同步代码执行完成之后开始注册的
 then的注册是Promise同步代码的一部分
 then的注册与执行是不同的
-
