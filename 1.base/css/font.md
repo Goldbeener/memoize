@@ -276,15 +276,46 @@ font-family: `<family-name>` | `<generic-name>`
 - cursive
 - fantasy
 - system-ui
+  - 对应平台的默认用户界面字体
 - math
 - emoji
 - fangsong
 
 font-family的值，是一组字体族名或通用字体族名，以逗号隔开，优先级递减
 
-浏览器渲染字符时，逐个字符按照上述优先级顺序，挑选合适的字体族
-可能同一行文本中的字符，应用了不同的字体族
+`浏览器渲染字符时，逐个字符按照上述优先级顺序，挑选合适的字体族`
+`可能同一行文本中的字符，应用了不同的字体族`
 
-并且字体族的应用还受到`font-weight`、`font-style`、`font-size`的影响
+并且字体族的选择还受到`font-weight`、`font-style`、`font-size`的影响
 因为某些字体族可能没有设计对应`font-weight: bold`,`font-style: italic`等风格
 这时候就会使用后续的符合条件的字体族
+> 也就是要选择所有字体要素都符合的字体
+
+### font-family 实践
+
+ios 中系统默认字体：
+`San Francisco` 是系统默认的英文和其他语言字体
+`PingFang SC` 是系统默认的中文字体
+
+```css
+body {
+  font-family: system-ui, -apple-system;
+}
+```
+
+上述设置，在iOS设备中，
+将使用`San Francisco`显示英文和其他非中文文本；
+使用`PingFang SC`来显示中文文本
+
+**最佳实践**
+在body整体上做如下设置；
+其他任何地方不应该再做`font-family`配置；
+除非有特殊设计，比如金额相关的，在对应模块，加上特殊配置； 特殊字体后面也需要加上这两个兜底值。
+
+```css
+body {
+  font-family: system-ui, -apple-system;
+}
+```
+
+特殊配制，可以通过less函数或者是postcss插件
