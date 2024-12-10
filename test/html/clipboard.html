@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span class="source">复制我</span>
+    <button class="copy-btn">复制</button>
+    <script>
+      const btn = document.querySelector('.copy-btn');
+
+      const commandCopy = () => {
+        const textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+        textarea.style.position = 'absolute';
+        textarea.style.clip = 'rect(0,0,0,0)'; // 隐藏
+        textarea.style.top = '10px'; // 保证textarea在可视区，否则select方法会触发浏览器默认的跳转行为（滚动以将目标元素显示在可视区）
+        textarea.value = 'hahaha---';
+        textarea.select();
+        const res = document.execCommand('copy', false); // 同步执行
+        document.body.removeChild(textarea);
+        return res;
+      };
+
+      async function copyText(text) {
+        const permissionState = await navigator.permissions.query({
+          name: 'clipboard-write',
+        });
+        console.log('???', permissionState);
+
+        if (
+          permissionState.state === 'granted' ||
+          permissionState.state === 'prompt'
+        ) {
+          // 支持
+          try {
+            await navigator.clipboard.writeText(text);
+            // await navigator.clipboard.readText();  // 读取剪切板内容
+            console.log('复制成功');
+          } catch (e) {
+            console.log('复制失败', e);
+          }
+        }
+      }
+
+      // btn.addEventListener('click', commandCopy, false);
+      btn.addEventListener(
+        'click',
+        () => {
+          copyText('hello word');
+        },
+        false
+      );
+
+      const source = document.querySelector('.source');
+      source.addEventListener(
+        'copy',
+        (event) => {
+          const selection = document.getSelection();
+          event.clipboardData.setData(
+            'text/plain',
+            selection.toString().toUpperCase()
+          );
+          event.preventDefault();
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

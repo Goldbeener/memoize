@@ -1,7 +1,7 @@
 # 获取当前页面已使用的localStorage内存量
 
 1. localStorage内都是以utf-16 string的形式存储的
-2. key\value都要计算
+2. key&value都要计算
 3. localStorage api
 
 ```js

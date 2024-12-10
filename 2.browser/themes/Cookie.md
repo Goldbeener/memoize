@@ -6,6 +6,7 @@
 > Cookie 复数形态Cookies，类型为`小型文本文件`， 指某些网站为了辨别用户身份而储存在用户本地终端上的数据。
 
 关键信息：小型文本文件，储存在用户本地终端，目的是`辨别客户端用户身份`
+> key-value 数据
 > 在Mac系统上存储位置是 `/Users/<useName>/Library/Application\ Support/Google/Chrome/Default/Cookies`
 > Cookies 是一个SQLite数据库文件，本机Chrome浏览器记录的所有域名下的Cookie都存储在此文件中。
 
@@ -241,3 +242,7 @@ jwt = base64UrlEncode(header) + "." + base64UrlEncode(payload) + "." + sign;
 1. 默认不加密，开发者可以生成原始token之后再加密
 2. 无法及时废除token，除非有别的逻辑
 3. 最好使用https协议传输
+
+## Cookie Store API
+
+异步操作cookie api

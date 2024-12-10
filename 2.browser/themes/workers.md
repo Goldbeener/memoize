@@ -7,6 +7,7 @@ worker 是运行在独立于js引擎主线程之外的一个线程。
 1. `web worker`
 2. `service worker`
 3. `worklets`
+4. `SharedWorker`
 
 ## Web Workers
 
