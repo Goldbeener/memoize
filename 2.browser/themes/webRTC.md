@@ -1,10 +1,11 @@
 # WebRTC
+
 实时通信技术，
 不借助中间媒介，实现点对点链接
 传输音视频流或者其他任意数据
 
-
 ## 使用方式
+
 1. 创建链接 `RTCPeerConnection`
 2. 交换ice 通信双方交互相互的通信信息
 3. 添加轨道流 `addTrack`  是将发送方要发送的流信息添加到链接的track上
@@ -28,13 +29,11 @@ const pc2 = new RTCPeerConnection(options);
 ```
 
 ### 信令服务器
+
 通信的双方 交换双方的媒体信息 RTCSessionDescription
 
 是通过 `offer` 和 `answer` 来 实现的。
 
 需要
 
-### 
-
-
-
+###
