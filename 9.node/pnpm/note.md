@@ -17,6 +17,8 @@
   + npm/yarn使用扁平化的包管理策略，使得项目能够使用未声明的依赖包，存在安全性请问题
   + pnpm的包结构策略解决了这个问题
 
+![alt text](image.png)
+
 ## monorepo
 
 `workspace`

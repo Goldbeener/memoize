@@ -1,0 +1,20 @@
+<script>
+  const test = () => {
+    return new Promise((resolve, reject) => {
+      reject('Hello');
+    });
+  };
+  /**
+   * thenable 对象
+   * then方法里面默认接受两个参数
+   * */
+  const obj = {
+    then(resolve, reject) {
+      test().then(resolve, reject);
+    },
+  };
+  async function main() {
+    await obj;
+  }
+  main();
+</script>
