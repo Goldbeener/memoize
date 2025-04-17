@@ -2,14 +2,16 @@
 
 ## 前言
 
-`useSignal() is the Future of Web Frameworks - Signals` 
+`useSignal() is the Future of Web Frameworks - Signals`
+
 `Why Signals Could Be the Future for Modern Web Frameworks?`
 
-最近前端圈内流行的一句话就是，`Signals是前端框架的未来`。
+最近前端圈内流行的一句话就是，`Signals是前端框架的未来`。   
 很多框架都有相关的实现：Solid、Angular、Preact、Qwik、Vue等
 
 ## Signals是什么？
-一种**存储应用状态的方式**，可以在被访问时跟踪依赖、在变更时触发副作用。
+先下定义：一种**存储应用状态的方式**，可以在被访问时跟踪依赖、在变更时触发副作用。   
+
 在现代Web框架中常用来`实现细粒度订阅和更新渲染`，也就是响应式。
 
 **主张**: 状态以值容器的形式存在，返回状态的getter和setter
@@ -25,7 +27,7 @@ setCount(5)
 console.log(getCount()); // 5
 ```
 
-
+与之对应的，以React为例，直接返回状态值；
 ```js
 // React
 const [count, setCount] = useState(0)
@@ -46,16 +48,10 @@ setCount(5);
 因为React useState返回的是一个状态值，无法知道这个值被哪些组件使用，
 只能通过setState知道这个状态发生了变更，
 不知道对应的哪些组件要更新，只能更新整个组件，
-这是一笔不小的开销
+这是一笔不小的开销。
 
 而使用Signal的框架，在状态被读取的时候，是会收集调用方作为依赖；
 这样在状态变更的时候，能够明确的确定需要更新的组件，这样就可以减少不必要的更新。
-
-![vue响应式效果](./.imgs/vue-reactive.png)
-
-可以看到，countA、countB发生变化的时候，精确的找到了需要更新的组件`Counter`和`Display`;
-上层的APP组件，并没有受到影响做无谓的更新操作。
-
 
 状态的含义，分为两个概念
   + 状态的引用，指向状态值的引用
@@ -68,6 +64,11 @@ setCount(5);
 
 **优化方向**: 使用状态引用，在调用getter的时候，收集状态的依赖
 
+![vue响应式效果](./.imgs/vue-reactive.png)
+
+可以看到，countA、countB发生变化的时候，精确的找到了需要更新的组件`Counter`和`Display`;
+上层的APP组件，并没有受到影响做无谓的更新操作。
+
 ### Prop drilling
 有些状态需要在不同的组件中使用，
 就必须把这个状态提升到这些组件的公共祖先组件层级上，
@@ -77,18 +78,18 @@ setCount(5);
 
 **有什么问题？**
 1. 状态更新时，触发不必要的更新
-2. 组件耦合度高，不利于符用，中间的组件需要帮助传递状态到下层，即使自身并不需要这个状态
+2. 组件耦合度高，不利于复用，中间的组件需要帮助传递状态到下层，即使自身并不需要这个状态
 
 **Signals如何避免这个问题？**
 
-Signals的创建不依赖于组件，可以抽取出独立的Signals创建逻辑
+Signals的创建不依赖于组件，可以抽取出独立的Signals创建逻辑；
 在组件树的任何层级，按需引用Signals，
 避免不必要的传递，也减少了不必要的组件更新。
 
 ## Signals如何实现的？
 再回顾一下Signals的定义，是一个状态容器，目标是存储状态值，工作内容是在被访问时保存调用者作为依赖；在状态更新时，通知依赖重新执行
 
-因此，Signals的关键就是存储、在读取时依赖保存、在变更时通知依赖。
+因此，Signals的关键就是存储状态、并且在被读取时保存依赖、在变更时通知依赖更新。
 
 一个简单的示例如下：
 

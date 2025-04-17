@@ -31,6 +31,34 @@
           }
         }
       }
+      .wrap2 {
+        display: inline-flex;
+        /* display: flex; */
+        /* width: fit-content; */
+        height: 100px;
+        margin: 30px 0;
+        border: 1px solid red;
+        .left {
+          /* flex: 0 0 100px; */
+          width: 100px;
+          height: 100%;
+          background: lightgray;
+        }
+        .right {
+          /* 
+          min-width: auto 该设置使得
+          */
+          /* overflow: hidden; */
+          /* min-width: fit-content; */
+          white-space: nowrap;
+          flex: 0 0 auto;
+          background: lightblue;
+          /* .right-content {
+            white-space: nowrap;
+            background: lightyellow;
+          } */
+        }
+      }
     </style>
   </head>
   <body>
@@ -40,6 +68,15 @@
         <div class="right-content">
           这个flex项目的子元素太长了超过了放大之后的最大值
         </div>
+      </div>
+    </div>
+
+    <div class="wrap2">
+      <div class="left"></div>
+      <div class="right">
+        <!-- <div class="right-content"> -->
+        这个flex项目的子元素太长了超过了放大之后的最大值
+        <!-- </div> -->
       </div>
     </div>
   </body>
