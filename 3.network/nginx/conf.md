@@ -164,6 +164,7 @@ location /location {
     root /root/path/ # 匹配的路径下的资源，需要在前面拼接上root前缀，才是资源完整的路径
 } 
 
+http://www.example.com/i/top.gif
 
 location /i/ {
     root /data/w3; # 资源寻找路径 /data/w3/i/top.gif;

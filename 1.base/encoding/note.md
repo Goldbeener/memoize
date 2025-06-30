@@ -139,14 +139,14 @@ Plane 0 Basic Multilingual Plane (BMP)
 
 Unicode Transformation Format - 32-bit
 
-utf-32 规范，规定所有的unicode码点都使用32位4字节空间来存储，位数不够的左边使用0来填充
+utf-32 规范，规定所有的unicode码点都使用32位`4字节`空间来存储，位数不够的左边使用0来填充
 
 因为常用的字符在BMP区，只需要2字节即可，所以utf-32规范会造成大量的空间浪费
 
 ### UTF-16
 
-+ 常见的字符 使用双字节16bit存储、解析
-+ 常见字符之外的，使用4字节存储、解析
++ 常见的字符 使用`2字节`16bit存储、解析
++ 常见字符之外的，使用`4字节`存储、解析
 
 UTF-16 编码实现
 
@@ -175,7 +175,7 @@ console.log(utf16.charCodeAt(1).toString(16)); // de00
 
 ## 相关字符串方法
 
-字符串的两个最重要的视图是字节（分配内存/复制/编码/解码）和扩展字位簇（所有语义操作）
+字符串的两个最重要的视图是`字节`（分配内存/复制/编码/解码）和`扩展字位簇`（所有语义操作）
 
 `JS中使用UTF-16编码`，每一个unicode字符可能使用1-2个码元 （基本平面使用1个码元2个字节； 扩展平面。用2个码元4个字节）
 `码元` 代码单元 UTF-16 code unit 每个码元2个字节
@@ -207,8 +207,8 @@ charCodeAt 会返回字符串对应位置的码元对应的10进制数
 > codePoint是对charCode增强版，在基本平面，charCode 和 codePoint等同
 > 但是在扩展平面charCode无法正确表示，因此才新增了codePoint
 
-`String.formCharCode(index)` 返回码元号对应的字符串
-`String.formCodePoint(index)` 返回码点数对应的字符串
+`String.fromCharCode(index)` 返回码元号对应的字符串
+`String.fromCodePoint(index)` 返回码点数对应的字符串
 
 ```js
 '𠮶𠮷' 这个字符串，表面有2个元素组成，但是每个元素都是在拓展面

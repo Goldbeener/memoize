@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue3 标签列表展开收起</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          sans-serif;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .tag-list {
+        position: relative;
+        line-height: 1.6;
+        overflow: hidden;
+      }
+
+      .tag-wrapper {
+        display: inline-block;
+        margin: 0 8px 8px 0;
+        vertical-align: top;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        font-size: 14px;
+        white-space: nowrap;
+        max-width: calc(100vw - 100px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.3s ease;
+        cursor: default;
+      }
+
+      .tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .expand-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        background: #f0f0f0;
+        color: #666;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 8px 8px 0;
+        user-select: none;
+      }
+
+      .expand-btn:hover {
+        background: #e0e0e0;
+        border-color: #ccc;
+      }
+
+      .expand-btn:active {
+        transform: scale(0.95);
+      }
+
+      .tag-wrapper.force-new-line {
+        display: block;
+        width: 100%;
+      }
+
+      .tag-wrapper.force-new-line .tag {
+        display: inline-block;
+      }
+
+      .demo-section {
+        margin-bottom: 40px;
+      }
+
+      .demo-title {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>Vue3 标签列表展开收起组件</h1>
+
+        <div class="demo-section">
+          <div class="demo-title">示例1：较短标签列表</div>
+          <tag-list :tags="shortTags"></tag-list>
+        </div>
+
+        <div class="demo-section">
+          <div class="demo-title">示例2：较长标签列表</div>
+          <tag-list :tags="longTags"></tag-list>
+        </div>
+
+        <div class="demo-section">
+          <div class="demo-title">示例3：包含长文本的标签</div>
+          <tag-list :tags="mixedTags"></tag-list>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp, ref, onMounted, nextTick } = Vue;
+
+      const TagList = {
+        props: {
+          tags: {
+            type: Array,
+            default: () => [],
+          },
+        },
+        setup(props) {
+          const expanded = ref(false);
+          const needsExpansion = ref(false);
+          const tagListRef = ref(null);
+          const visibleTags = ref([]);
+          const hiddenTags = ref([]);
+          const forceLastTagNewLine = ref(false);
+
+          const calculateVisibleTags = async () => {
+            await nextTick();
+            if (!tagListRef.value || !props.tags.length) return;
+
+            // 先显示所有标签来测量高度
+            visibleTags.value = props.tags;
+            hiddenTags.value = [];
+            forceLastTagNewLine.value = false;
+
+            await nextTick();
+
+            const containerHeight = tagListRef.value.scrollHeight;
+            const lineHeight = parseFloat(
+              getComputedStyle(tagListRef.value).lineHeight
+            );
+            const twoRowHeight = lineHeight * 2.5;
+
+            if (containerHeight <= twoRowHeight) {
+              // 不需要展开功能
+              needsExpansion.value = false;
+              return;
+            }
+
+            needsExpansion.value = true;
+
+            // 需要为展开按钮预留空间
+            const expandBtnWidth = 60; // 展开按钮的大概宽度
+            const tags = tagListRef.value.querySelectorAll('.tag-wrapper');
+            const containerWidth = tagListRef.value.offsetWidth;
+
+            let totalHeight = 0;
+            let currentRowWidth = 0;
+            let currentRow = 1;
+            let lastVisibleIndex = -1;
+
+            for (let i = 0; i < tags.length; i++) {
+              const tagRect = tags[i].getBoundingClientRect();
+              const tagWidth = tagRect.width + 8; // 包含margin
+
+              // 检查是否需要换行
+              if (currentRowWidth + tagWidth > containerWidth) {
+                currentRow++;
+                currentRowWidth = tagWidth;
+              } else {
+                currentRowWidth += tagWidth;
+              }
+
+              if (currentRow <= 2) {
+                // 检查第二行是否有足够空间放置展开按钮
+                if (
+                  currentRow === 2 &&
+                  currentRowWidth + expandBtnWidth > containerWidth
+                ) {
+                  break; // 第二行空间不够，停止添加标签
+                }
+                lastVisibleIndex = i;
+              } else {
+                break;
+              }
+            }
+
+            if (lastVisibleIndex >= 0) {
+              visibleTags.value = props.tags.slice(0, lastVisibleIndex + 1);
+              hiddenTags.value = props.tags.slice(lastVisibleIndex + 1);
+            }
+          };
+
+          const checkCollapseButtonPosition = async () => {
+            if (!expanded.value) return;
+
+            await nextTick();
+            if (!tagListRef.value) return;
+
+            const containerWidth = tagListRef.value.offsetWidth;
+            const expandBtnWidth = 60; // 收起按钮的大概宽度
+            const tags = tagListRef.value.querySelectorAll('.tag-wrapper .tag');
+
+            if (tags.length === 0) return;
+
+            // 计算最后一个标签的位置
+            const lastTag = tags[tags.length - 1];
+            const lastTagRect = lastTag.getBoundingClientRect();
+            const containerRect = tagListRef.value.getBoundingClientRect();
+
+            const lastTagRightEdge = lastTagRect.right - containerRect.left;
+            const remainingWidth = containerWidth - lastTagRightEdge - 8; // 8px margin
+
+            console.log('????', remainingWidth, expandBtnWidth);
+            // 如果剩余空间不足以放置收起按钮，则强制最后一个标签换行
+            forceLastTagNewLine.value = remainingWidth < expandBtnWidth + 8;
+          };
+
+          const toggleExpanded = async () => {
+            expanded.value = !expanded.value;
+            if (expanded.value) {
+              visibleTags.value = props.tags;
+              hiddenTags.value = [];
+              await checkCollapseButtonPosition();
+            } else {
+              forceLastTagNewLine.value = false;
+              calculateVisibleTags();
+            }
+          };
+
+          onMounted(() => {
+            calculateVisibleTags();
+          });
+
+          return {
+            expanded,
+            needsExpansion,
+            tagListRef,
+            visibleTags,
+            hiddenTags,
+            forceLastTagNewLine,
+            toggleExpanded,
+          };
+        },
+        template: `
+                <div 
+                    ref="tagListRef"
+                    class="tag-list"
+                >
+                    <template v-for="(tag, index) in visibleTags" :key="index">
+                        <div 
+                            class="tag-wrapper"
+                            :class="{ 'force-new-line': forceLastTagNewLine && expanded && index === visibleTags.length - 2 }"
+                        >
+                            <span class="tag">{{ tag }}</span>
+                        </div>
+                    </template>
+                    <div 
+                        v-if="needsExpansion"
+                        class="tag-wrapper"
+                    >
+                        <span 
+                            class="expand-btn"
+                            @click="toggleExpanded"
+                        >
+                            {{ expanded ? '收起' : '展开' }}
+                        </span>
+                    </div>
+                </div>
+            `,
+      };
+
+      createApp({
+        components: {
+          TagList,
+        },
+        setup() {
+          const shortTags = ref([
+            'Vue.js',
+            'React',
+            'Angular',
+            'JavaScript',
+            'TypeScript',
+          ]);
+
+          const longTags = ref([
+            'Vue.js',
+            'React',
+            'Angular',
+            'JavaScript',
+            'TypeScript',
+            'Node.js',
+            'Express',
+            'MongoDB',
+            'MySQL',
+            'PostgreSQL',
+            'Redis',
+            'Docker',
+            'Kubernetes',
+            'AWS',
+            'Azure',
+            'Google Cloud',
+            'Jenkins',
+            'GitHub Actions',
+            'Webpack',
+            'Vite',
+            'Sass',
+            'Less',
+            'Tailwind CSS',
+            'Bootstrap',
+            'Material-UI',
+            'Ant Design',
+            'Element Plus',
+            'Nuxt.js',
+            'Next.js',
+            'Gatsby',
+            'GraphQL',
+            'Apollo',
+            'Jest',
+            'Cypress',
+            'Playwright',
+            'Storybook',
+            'Figma',
+            'Sketch',
+          ]);
+
+          const mixedTags = ref([
+            'Vue.js前端框架',
+            'React组件库开发',
+            'JavaScript ES6+新特性详解',
+            'TypeScript类型系统',
+            'Node.js后端开发',
+            'Express.js Web框架',
+            'MongoDB数据库设计',
+            'MySQL关系型数据库',
+            'Redis缓存技术',
+            'Docker容器化部署',
+            'Kubernetes集群管理',
+            'AWS云服务',
+            'CI/CD持续集成',
+            'Webpack模块打包',
+            'Vite构建工具',
+            'Sass CSS预处理器',
+            'Tailwind CSS原子化框架',
+            'Element Plus UI组件库',
+            'Nu',
+          ]);
+
+          return {
+            shortTags,
+            longTags,
+            mixedTags,
+          };
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
