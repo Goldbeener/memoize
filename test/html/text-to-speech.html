@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Build an interactive sentence-level text-to-speech reader with highlight, playback controls, and local progress tracking using HTML and JavaScript."
+    />
+    <title>Interactive TTS Article Reader</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 2rem;
+        background: #f0f4f8;
+        color: #333;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .toolbar button,
+      .toolbar select {
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        border: none;
+        font-size: 1rem;
+      }
+
+      .toolbar button {
+        background: #0077cc;
+        color: white;
+        cursor: pointer;
+      }
+
+      .toolbar button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .text-block {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .line {
+        display: block;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .line:hover {
+        background: #f9f9f9;
+      }
+
+      .line.active {
+        background: #fff3cd;
+        font-weight: bold;
+      }
+
+      .progress {
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      .bar {
+        height: 8px;
+        width: 100%;
+        background: #eee;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(to right, #0077cc, #005fa3);
+        transition: width 0.3s;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Read Along TTS Demo</h1>
+    <div class="toolbar">
+      <button id="start">Play</button>
+      <button id="pause" disabled>Pause</button>
+      <button id="resume" disabled>Resume</button>
+      <button id="stop" disabled>Stop</button>
+      <button id="reset">Reset</button>
+      <select id="voices"></select>
+    </div>
+    <div class="text-block" id="reader">
+      <span class="line">Learning to code is a never-ending journey.</span>
+      <span class="line"
+        >Technologies evolve rapidly, requiring constant adaptation.</span
+      >
+      <span class="line"
+        >JavaScript, HTML, and CSS are essential tools for web
+        development.</span
+      >
+      <span class="line"
+        >Frameworks like React and Vue enhance front-end capabilities.</span
+      >
+      <span class="line"
+        >Back-end skills with Node.js extend JavaScript to the server.</span
+      >
+    </div>
+    <div class="progress">
+      <span id="progressText">0/0</span>
+      <div class="bar">
+        <div class="bar-fill" id="bar"></div>
+      </div>
+    </div>
+    <p>Created for <a href="https://jsdev.space">JSDev Space</a></p>
+
+    <script>
+      const lines = document.querySelectorAll('.line');
+      const playBtn = document.getElementById('start');
+      const pauseBtn = document.getElementById('pause');
+      const resumeBtn = document.getElementById('resume');
+      const stopBtn = document.getElementById('stop');
+      const resetBtn = document.getElementById('reset');
+      const voiceSelect = document.getElementById('voices');
+      const progressText = document.getElementById('progressText');
+      const progressBar = document.getElementById('bar');
+
+      const synth = window.speechSynthesis;
+      let voices = [];
+      let currentIndex = 0;
+      let currentUtterance = null;
+      let isPaused = false;
+
+      function populateVoices() {
+        voices = synth.getVoices();
+        voiceSelect.innerHTML = '';
+        voices.forEach((voice, index) => {
+          const opt = document.createElement('option');
+          opt.value = index;
+          opt.textContent = `${voice.name} (${voice.lang})`;
+          voiceSelect.appendChild(opt);
+        });
+      }
+
+      synth.onvoiceschanged = populateVoices;
+      populateVoices();
+
+      function updateUI() {
+        progressText.textContent = `${currentIndex + 1}/${lines.length}`;
+        progressBar.style.width = `${
+          ((currentIndex + 1) / lines.length) * 100
+        }%`;
+      }
+
+      function highlightLine(index) {
+        lines.forEach((line, i) => {
+          line.classList.toggle('active', i === index);
+        });
+        lines[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      function speakLine(index) {
+        if (index >= lines.length) return;
+        const text = lines[index].textContent;
+        const utter = new SpeechSynthesisUtterance(text);
+        const selected = voiceSelect.value;
+        if (voices[selected]) utter.voice = voices[selected];
+        utter.rate = 1;
+
+        utter.onstart = () => {
+          highlightLine(index);
+          playBtn.disabled = true;
+          pauseBtn.disabled = false;
+          resumeBtn.disabled = true;
+          stopBtn.disabled = false;
+        };
+
+        utter.onend = () => {
+          if (!isPaused) {
+            currentIndex++;
+            if (currentIndex < lines.length) {
+              speakLine(currentIndex);
+            } else {
+              resetControls();
+            }
+          }
+        };
+
+        currentUtterance = utter;
+        synth.speak(utter);
+        updateUI();
+      }
+
+      function resetControls() {
+        playBtn.disabled = false;
+        pauseBtn.disabled = true;
+        resumeBtn.disabled = true;
+        stopBtn.disabled = true;
+      }
+
+      playBtn.onclick = () => {
+        currentIndex = 0;
+        speakLine(currentIndex);
+      };
+      pauseBtn.onclick = () => {
+        synth.pause();
+        isPaused = true;
+        pauseBtn.disabled = true;
+        resumeBtn.disabled = false;
+      };
+      resumeBtn.onclick = () => {
+        synth.resume();
+        isPaused = false;
+        pauseBtn.disabled = false;
+        resumeBtn.disabled = true;
+      };
+      stopBtn.onclick = () => {
+        synth.cancel();
+        resetControls();
+      };
+      resetBtn.onclick = () => {
+        synth.cancel();
+        currentIndex = 0;
+        highlightLine(currentIndex);
+        updateUI();
+      };
+
+      lines.forEach((line, index) => {
+        line.addEventListener('click', () => {
+          synth.cancel();
+          currentIndex = index;
+          speakLine(currentIndex);
+        });
+      });
+
+      updateUI();
+    </script>
+  </body>
+</html>

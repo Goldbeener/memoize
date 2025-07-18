@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .block,
+      .original-block {
+        display: flex;
+        flex-direction: column;
+        background-color: beige;
+        margin-bottom: 32px;
+      }
+    </style>
+    <script src="../js/vue.global.js"></script>
+  </head>
+  <body>
+    <div class="block">
+      <div id="app"></div>
+    </div>
+
+    <div class="original-block">
+      <div class="anchor">我是已存在的</div>
+      <button id="btn">点击插入</button>
+    </div>
+
+    <script>
+      const { createApp, ref, h, render, Fragment } = Vue;
+      let wrapper = null;
+      let hasAppended = false;
+
+      function insertV() {
+        // 每次不是新建容器，而是复用已有的容器
+        if (!wrapper) {
+          wrapper = document.createDocumentFragment();
+        }
+
+        console.log('>>>', wrapper._vnode);
+
+        const vnode = h(Fragment, null, [
+          h('div', { class: 'mask' }),
+          h('div', { class: 'content' }, Date.now()),
+        ]);
+
+        // wrapper对象唯一，非首次调用，就会触发patch
+        render(vnode, wrapper);
+        // render之后 wrapper 内容已经被复制、清空 所以后续也没必要再append
+
+        // 只需要在首次append；后续通过render直接更新dom，因为相同的container，走patch-diff流程，patchChildren阶段会更新现有dom
+        if (!hasAppended) {
+          document.body.appendChild(wrapper);
+          hasAppended = true;
+        }
+      }
+
+      const comp = {
+        setup() {
+          return () =>
+            h(
+              'button',
+              {
+                onClick() {
+                  insertV();
+                },
+              },
+              'vue插入2'
+            );
+        },
+      };
+
+      createApp(comp).mount('#app');
+    </script>
+
+    <script>
+      let container;
+      let id = 0;
+      const anchor = document.querySelector('.anchor');
+
+      function insert() {
+        if (!container) {
+          container = document.createDocumentFragment();
+        }
+
+        const inner = document.createElement('span');
+        inner.textContent = 'hello world' + id++;
+
+        container.appendChild(inner);
+
+        document.querySelector('.original-block').appendChild(container);
+      }
+
+      function insertExists() {
+        document.querySelector('.original-block').appendChild(anchor);
+      }
+
+      document.querySelector('#btn').addEventListener(
+        'click',
+        () => {
+          insert();
+          // insertExists();
+        },
+        false
+      );
+    </script>
+
+    <script>
+      const run = async (function_, resolve, arguments_) => {
+        const result = (async () => function_(...arguments_))();
+
+        resolve(result);
+
+        try {
+          await result;
+        } catch {}
+
+        next();
+      };
+
+      const _run = async (function_, resolve, arguments_) => {
+        try {
+          const result = await function_(...arguments_);
+
+          resolve(result);
+        } catch {}
+
+        next();
+      };
+    </script>
+  </body>
+</html>
