@@ -107,3 +107,5 @@
 
 
 
+
+[partial-keyframes](https://www.joshwcomeau.com/animation/partial-keyframes/)
