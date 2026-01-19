@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #fileElem {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="file" id="fileElem" multiple accept="image/*" />
+  <a href="#" id="fileSelect">Select some files</a>
+  <div id="fileList">
+    <p>No files selected!</p>
+  </div>
+
+  <script>
+    const fileSelect = document.querySelector('#fileSelect')
+    const fileElem = document.querySelector('#fileElem')
+    const fileList = document.querySelector('#fileList')
+
+    fileSelect.addEventListener('click', (e) => {
+      if (fileElem) {
+        fileElem.click()
+      }
+      e.preventDefault()
+    }, false)
+
+    fileElem.addEventListener('change', handleFiles)
+
+    function handleFiles() {
+      fileList.textContent = ''
+
+      if (!this.files.length) {
+        fileList.textContent = 'no files selected'
+      } else {
+        const list = document.createElement('ul');
+        fileList.appendChild(list)
+
+        for (const file of this.files) {
+          const li = document.createElement('li')
+          list.appendChild(li)
+
+          const img = document.createElement('img')
+          const url = URL.createObjectURL(file)
+          img.src = url
+          img.height = 60
+          li.appendChild(img)
+
+          img.onload = () => {
+            console.log('图片加载完成')
+            /**
+             * 加载完成之后立马释放，不会影响页面展示
+             * 但是会导致右键在新页面查看图片、下载图片失败
+            */
+            URL.revokeObjectURL(url)
+          }
+
+          const info = document.createElement('span')
+          info.textContent = `${file.name}: ${file.size} bytes`
+          li.appendChild(info)
+        }
+      }
+    }
+
+  </script>
+</body>
+
+</html>

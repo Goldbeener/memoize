@@ -1,45 +1,4 @@
-# File API
-
-web应用访问文件及其内容的api
-
-主要通过以下两种方式
-
-+ 文件`<input type="file" name=""/>`元素
-+ 拖放 drag and drop
-
-这两种方式，得到的产物是`FileList`对象，web应用可以访问其中的单个`File`对象，获取file的`元数据`信息，比如文件名称、大小、类型和最后修改时间
-
-```ts
-type FileList = File[]
-
-type File = {
-  name: string,
-  size: number,
-  type: string,
-  lastModified: number,
-  lastModifiedDate: Date
-}
-
-```
-
-`FileReader` 访问File对象的内容
-FileReaderSync(仅web worker可用)
-
-File的操作路径：
-
-+ input/drag
-  + FileList
-    + File
-      + meta
-        + name
-        + size
-        + type
-        + lastModified
-      + content
-        + FileReader
-          + FileReaderSync
-
-## Blob
+# Blob
 
 二进制大对象
 文件的不可变原始数据对象
@@ -73,7 +32,55 @@ class Blob {
 }
 ```
 
-File对象是一个特殊的Blob
+`Blob`对象是一个打好的包裹，包含了原始的二进制数据，
+但是对这个数据的来源、用途、名字都一无所知
+
+`File`对象是一个特殊的`Blob`
+像是贴了标签的包裹，
+有名字、修改时间等
+
+## File
+
+web应用访问文件及其内容的api
+
+主要通过以下两种方式获取File对象
+
++ 文件`<input type="file" name=""/>`元素选择文件返回的`FileList`对象中
++ 拖放 `drag` and `drop` 操作返回的`DataTransfer`对象中
+
+web应用可以访问其中的单个`File`对象，获取file的`元数据`信息，
+比如文件名称、大小、类型和最后修改时间
+
+```ts
+type FileList = File[]
+
+type File = {
+  name: string,
+  size: number,
+  type: string,
+  lastModified: number,
+  lastModifiedDate: Date
+}
+
+```
+
+`FileReader` 访问File对象的内容
+FileReaderSync(仅web worker可用)
+
+File的操作路径：
+
++ input/drag
+  + FileList
+    + File
+      + meta
+        + name
+        + size
+        + type
+        + lastModified
+      + content
+        + FileReader
+          + FileReaderSync
+
 
 ### 从blob中提取数据
 
@@ -105,9 +112,11 @@ class FileReader {
   abort() {}
   readAsArrayBuffer(target: File|Blob) {}
   readAsBinaryString(target: File|Blob) {}
-  readAsDataURL(target: File|Blob) {}
-  readAsText(target: File|Blob) {}
+  readAsDataURL(target: File|Blob) {} // 将文件的数据表示为base64编码的字符串
+  readAsText(target: File|Blob) {} // 得到表示文件内容的文本字符串，加载在内存中，不适合大文件
 }
+
+// TextDecoder
 
 ```
 
@@ -115,8 +124,9 @@ class FileReader {
 
 ### URL.createObjectURL(object: File|Blob|MediaSource)
 
-创建一个string, 包含了对象的url，可以用来指定源object的内容
-简单来说，就是给指定对象创建一个可以引用的url，这个url的生命周期和当前的document绑定
+创建一个url string, 包含了对象的url，可以用来指定源object的内容
+简单来说，就是给指定对象创建一个可以引用的url，
+这个url的生命周期和当前的document绑定
 
 同一个资源，多次创建会产生重复的新的url。
 
