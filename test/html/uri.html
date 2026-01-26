@@ -19,10 +19,21 @@
     <p>No files selected!</p>
   </div>
 
+  <img src="" alt="" id="target" width="300" class="img">
+  <canvas id="canvas"></canvas>
+  <img src="" alt="" id="post" class="img">
+
+
+
   <script>
     const fileSelect = document.querySelector('#fileSelect')
     const fileElem = document.querySelector('#fileElem')
     const fileList = document.querySelector('#fileList')
+    const targetImg = document.querySelector('#target')
+    const postImg = document.querySelector('#post')
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
     fileSelect.addEventListener('click', (e) => {
       if (fileElem) {
@@ -52,13 +63,19 @@
           img.height = 60
           li.appendChild(img)
 
+          targetImg.src = url;
+          targetImg.onload = () => {
+            console.log('jiazai ')
+            handleImg(targetImg)
+          }
+
           img.onload = () => {
             console.log('图片加载完成')
             /**
              * 加载完成之后立马释放，不会影响页面展示
              * 但是会导致右键在新页面查看图片、下载图片失败
             */
-            URL.revokeObjectURL(url)
+            // URL.revokeObjectURL(url)
           }
 
           const info = document.createElement('span')
@@ -66,6 +83,61 @@
           li.appendChild(info)
         }
       }
+    }
+
+    function handleImg(img) {
+      // 图片在页面上的展示尺寸（CSS 像素）
+      const displayWidth = img.clientWidth;
+      const displayHeight = img.clientHeight;
+
+      // 设备像素比（关键）
+      const dpr = window.devicePixelRatio || 1;
+
+      // 1️⃣ 设置 canvas 的绘图缓冲区尺寸
+      canvas.width = Math.round(displayWidth * dpr);
+      canvas.height = Math.round(displayHeight * dpr);
+
+      // 2️⃣ 设置 canvas 的 CSS 尺寸
+      canvas.style.width = `${displayWidth}px`;
+      canvas.style.height = `${displayHeight}px`;
+
+      // 3️⃣ 坐标系缩放（否则画面会被缩小）
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // 4️⃣ 绘制图片（按 CSS 尺寸）
+      ctx.drawImage(img, 0, 0, displayWidth, displayHeight);
+
+      // 获取像素数据（关键）
+      const imageData = ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      const data = imageData.data; // Uint8ClampedArray
+      // data.buffer 就是 ArrayBuffer
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        data[i] = gray; // R
+        data[i + 1] = gray; // G
+        data[i + 2] = gray; // B
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        postImg.src = url;
+      });
+
     }
 
   </script>
